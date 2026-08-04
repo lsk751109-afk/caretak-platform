@@ -139,6 +139,7 @@ isPaid &&
 }
 
 </div>
+      </article>;
     })}</div>}</section>
 
     <section className="dashboardSection"><div className="dashboardTitle"><h2>알림</h2>{unreadCount > 0 && <button className="textAction" onClick={markAllRead}>모두 읽음</button>}</div>{notifications.length === 0 ? <div className="emptyState">새로운 알림이 없습니다.</div> : <div className="notificationList">{notifications.map((item) => <button className={`notificationItem ${item.is_read ? "read" : "unread"}`} key={item.id} onClick={() => !item.is_read && markNotificationRead(item.id)}><span className="notificationDot"/><span className="notificationCopy"><b>{item.title || "케어택 알림"}</b><span>{item.message || "새로운 안내가 있습니다."}</span><small>{new Date(item.created_at).toLocaleString("ko-KR")}</small></span></button>)}</div>}</section>
