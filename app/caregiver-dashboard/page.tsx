@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import "../forms.css";
+import "./caregiver-dashboard.css";
 
 type Caregiver = {
   id: string;
