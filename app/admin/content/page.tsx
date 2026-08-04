@@ -77,15 +77,34 @@ export default function AdminContentPage() {
   async function addBanner(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const activate = form.get("is_active") === "on";
+
+    if (activate) {
+      const { error: deactivateError } = await supabase.from("site_banners").update({ is_active: false }).eq("is_active", true);
+      if (deactivateError) return setMessage(deactivateError.message);
+    }
+
     const { error } = await supabase.from("site_banners").insert({
       title: String(form.get("title") || "").trim(),
       subtitle: String(form.get("subtitle") || "").trim() || null,
       link_url: String(form.get("link_url") || "").trim() || null,
-      is_active: form.get("is_active") === "on",
+      is_active: activate,
     });
     if (error) return setMessage(error.message);
     event.currentTarget.reset();
-    setMessage("배너를 등록했습니다.");
+    setMessage(activate ? "활성 배너를 등록했습니다." : "배너를 비활성 상태로 등록했습니다.");
+    load();
+  }
+
+  async function toggleBanner(item: Banner) {
+    setMessage("");
+    if (!item.is_active) {
+      const { error: deactivateError } = await supabase.from("site_banners").update({ is_active: false }).eq("is_active", true);
+      if (deactivateError) return setMessage(deactivateError.message);
+    }
+    const { error } = await supabase.from("site_banners").update({ is_active: !item.is_active }).eq("id", item.id);
+    if (error) return setMessage(error.message);
+    setMessage(item.is_active ? "배너를 비활성화했습니다." : "배너를 활성화했습니다.");
     load();
   }
 
@@ -115,8 +134,8 @@ export default function AdminContentPage() {
     </section>
 
     <section className="dashboardSection"><div className="dashboardTitle"><h2>메인 배너</h2><span>{banners.length}건</span></div>
-      <form className="authForm requestForm" onSubmit={addBanner}><label>제목<input name="title" required /></label><label>부제목<input name="subtitle" /></label><label className="full">연결 주소<input name="link_url" placeholder="/care-request" /></label><label className="agreementCheck full"><input name="is_active" type="checkbox" /><span>활성화</span></label><button className="primaryButton full">배너 등록</button></form>
-      <div className="historyList">{banners.map((item) => <article className="historyItem" key={item.id}><div><b>{item.title}</b><p>{item.is_active ? "활성" : "비활성"} · {item.link_url || "연결 없음"}</p></div><button className="textAction" onClick={() => remove("site_banners", item.id)}>삭제</button></article>)}</div>
+      <form className="authForm requestForm" onSubmit={addBanner}><label>제목<input name="title" required /></label><label>부제목<input name="subtitle" /></label><label className="full">연결 주소<input name="link_url" placeholder="/care-request" /></label><label className="agreementCheck full"><input name="is_active" type="checkbox" defaultChecked /><span>등록 즉시 메인에 표시</span></label><button className="primaryButton full">배너 등록</button></form>
+      <div className="historyList">{banners.map((item) => <article className="historyItem" key={item.id}><div><b>{item.title}</b><p>{item.is_active ? "활성 · 메인 표시 중" : "비활성"} · {item.link_url || "연결 없음"}</p></div><div className="adminActions"><button onClick={() => toggleBanner(item)}>{item.is_active ? "숨기기" : "메인에 표시"}</button><button className="textAction" onClick={() => remove("site_banners", item.id)}>삭제</button></div></article>)}</div>
     </section>
   </main>;
 }
