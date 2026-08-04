@@ -31,8 +31,15 @@ export default function AuthActions() {
   if (email) {
     return (
       <div className="headerActions">
-        <span className="userEmail" title={email}>{email.split("@")[0]}님</span>
-        <button className="textButton authButton" type="button" onClick={logout}>로그아웃</button>
+        <span title={email} style={{ color: "#637083", fontSize: 14, fontWeight: 700 }}>{email.split("@")[0]}님</span>
+        <button
+          className="textButton"
+          type="button"
+          onClick={logout}
+          style={{ border: 0, background: "transparent", cursor: "pointer", font: "inherit" }}
+        >
+          로그아웃
+        </button>
       </div>
     );
   }
