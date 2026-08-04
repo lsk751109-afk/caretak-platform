@@ -92,22 +92,53 @@ export default function MyPage() {
       const isPaid = payment?.payment_status === "paid";
       return <article className="assignedCaregiverCard" key={match.id}><div className="assignedCardTop"><div className="caregiverAvatar">{match.caregivers?.name?.slice(0, 1) || "간"}</div><div><h3>{match.caregivers?.name || "간병인 확인 중"}</h3><p>{match.care_requests?.patient_name || "환자"} · {match.care_requests?.service_type || "간병 서비스"}</p></div><span className={`historyStatus match-${match.status || "unknown"}`}>{matchingStatusLabel(match.status)}</span></div>
       <dl className="assignmentDetails"><div><dt>근무 지역</dt><dd>{match.care_requests?.address || "-"}</dd></div><div><dt>근무 기간</dt><dd>{match.care_requests?.start_date || "미정"}{match.care_requests?.end_date ? ` ~ ${match.care_requests.end_date}` : ""}</dd></div><div><dt>경력</dt><dd>{match.caregivers?.career_years || 0}년</dd></div><div><dt>자격증</dt><dd>{match.caregivers?.certificate || "등록 정보 없음"}</dd></div><div><dt>희망 시급</dt><dd>{match.caregivers?.hourly_rate ? `${match.caregivers.hourly_rate.toLocaleString()}원` : "협의"}</dd></div><div>
-  <dt>연락처</dt>{match.care_requests?.id && !isPaid &&
+   <dt>연락처</dt>
+  <dd>
+    {
+      isPaid
+      ? match.caregivers?.phone || "확인 중"
+      : "결제 완료 후 공개"
+    }
+  </dd>
+</div>
+      </dl>
+<div className="paymentActionRow">
+
+<span className={`paymentStatusTag payment-${payment?.payment_status || "none"}`}>
+{
+ payment
+ ? paymentStatusLabel[payment.payment_status || "ready"]
+ : "미결제"
+}
+</span>
+
+
+{
+match.care_requests?.id && !isPaid &&
 <a 
  className="smallPrimary"
  href={`/payment/${match.care_requests.id}`}
 >
- {
+{
  payment?.payment_status === "ready"
  ? "결제 계속하기"
  : "결제하기"
- }
+}
 </a>
 }
-  </dd>
-</div></dl>
-      <div className="paymentActionRow"><span className={`paymentStatusTag payment-${payment?.payment_status || "none"}`}>{payment ? paymentStatusLabel[payment.payment_status || "ready"] || payment.payment_status : "미결제"}</span>{match.care_requests?.id && canPay && payment?.payment_status !== "paid" && <a className="smallPrimary" href={`/payment/${match.care_requests.id}`}>{payment?.payment_status === "ready" ? "결제 계속하기" : "결제하기"}</a>}{payment?.payment_status === "paid" && <a className="secondaryButton compactButton" href="/mypage/payments">결제 내역</a>}</div>
-      </article>;
+
+
+{
+isPaid &&
+<a 
+ className="secondaryButton compactButton"
+ href="/mypage/payments"
+>
+결제 내역
+</a>
+}
+
+</div>
     })}</div>}</section>
 
     <section className="dashboardSection"><div className="dashboardTitle"><h2>알림</h2>{unreadCount > 0 && <button className="textAction" onClick={markAllRead}>모두 읽음</button>}</div>{notifications.length === 0 ? <div className="emptyState">새로운 알림이 없습니다.</div> : <div className="notificationList">{notifications.map((item) => <button className={`notificationItem ${item.is_read ? "read" : "unread"}`} key={item.id} onClick={() => !item.is_read && markNotificationRead(item.id)}><span className="notificationDot"/><span className="notificationCopy"><b>{item.title || "케어택 알림"}</b><span>{item.message || "새로운 안내가 있습니다."}</span><small>{new Date(item.created_at).toLocaleString("ko-KR")}</small></span></button>)}</div>}</section>
