@@ -1,4 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import AuthActions from "@/components/AuthActions";
+import { supabase } from "@/lib/supabase";
+
+type Banner = { id: string; title: string; subtitle: string | null; link_url: string | null; image_url: string | null };
+type Notice = { id: string; title: string; content: string; created_at: string };
+type Faq = { id: string; question: string; answer: string };
 
 const services = [
   { icon: "🩺", title: "전문 간병인", text: "경력과 정보를 확인한 간병인을 연결합니다." },
@@ -10,13 +18,38 @@ const services = [
 const steps = ["회원가입", "간병 신청", "간병인 매칭", "서비스 시작"];
 
 export default function Home() {
+  const [banner, setBanner] = useState<Banner | null>(null);
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [faqs, setFaqs] = useState<Faq[]>([]);
+
+  useEffect(() => {
+    async function loadCms() {
+      const [bannerResult, noticeResult, faqResult] = await Promise.all([
+        supabase.from("site_banners").select("id,title,subtitle,link_url,image_url").eq("is_active", true).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+        supabase.from("notices").select("id,title,content,created_at").eq("is_published", true).order("created_at", { ascending: false }).limit(3),
+        supabase.from("faqs").select("id,question,answer").eq("is_published", true).order("sort_order", { ascending: true }).limit(6),
+      ]);
+      if (bannerResult.data) setBanner(bannerResult.data);
+      if (noticeResult.data) setNotices(noticeResult.data);
+      if (faqResult.data) setFaqs(faqResult.data);
+    }
+    loadCms();
+  }, []);
+
   return (
     <main>
       <header className="header">
         <a className="brand" href="#top" aria-label="케어택 홈"><span className="brandMark">C</span><span>케어택</span></a>
-        <nav className="nav" aria-label="주요 메뉴"><a href="#services">서비스</a><a href="#process">이용방법</a><a href="#vip">VIP 간병</a><a href="#contact">고객센터</a></nav>
+        <nav className="nav" aria-label="주요 메뉴"><a href="#services">서비스</a><a href="#process">이용방법</a><a href="#notice">공지</a><a href="#faq">FAQ</a><a href="#vip">VIP 간병</a></nav>
         <AuthActions />
       </header>
+
+      {banner && (
+        <section className="cmsBanner" style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(7,62,59,.92),rgba(7,95,91,.70)),url(${banner.image_url})` } : undefined}>
+          <div><span>CARETAK NOTICE</span><h2>{banner.title}</h2><p>{banner.subtitle}</p></div>
+          <a href={banner.link_url || "/care-request"}>자세히 보기</a>
+        </section>
+      )}
 
       <section className="hero" id="top">
         <div className="heroCopy">
@@ -43,6 +76,10 @@ export default function Home() {
         <div className="sectionHeading light"><span className="eyebrow">HOW IT WORKS</span><h2>간단한 4단계로 시작하세요.</h2></div>
         <div className="steps">{steps.map((step, index) => <div className="step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step}</h3><p>{index === 0 ? "보호자 또는 간병인으로 가입합니다." : index === 1 ? "환자와 일정 정보를 입력합니다." : index === 2 ? "조건에 맞는 간병인을 확인합니다." : "확정된 일정에 맞춰 서비스를 시작합니다."}</p></div>)}</div>
       </section>
+
+      {notices.length > 0 && <section className="section cmsSection" id="notice"><div className="sectionHeading"><span className="eyebrow">NOTICE</span><h2>케어택 공지사항</h2></div><div className="noticeGrid">{notices.map((item) => <article key={item.id}><time>{new Date(item.created_at).toLocaleDateString("ko-KR")}</time><h3>{item.title}</h3><p>{item.content}</p></article>)}</div></section>}
+
+      {faqs.length > 0 && <section className="section faqSection" id="faq"><div className="sectionHeading"><span className="eyebrow">FAQ</span><h2>자주 묻는 질문</h2></div><div className="faqList">{faqs.map((item) => <details key={item.id}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section>}
 
       <section className="vipSection" id="vip">
         <div><span className="eyebrow gold">VIP CARE</span><h2>중요한 순간을 위한<br />VIP 전담간병</h2><p>전담 코디네이터가 보호자 상담부터 간병인 배정, 일정 관리까지 세심하게 지원합니다.</p><a className="darkButton" href="/vip">VIP 상담 신청</a></div>
