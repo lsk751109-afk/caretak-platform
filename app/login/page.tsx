@@ -3,6 +3,24 @@
 import { FormEvent, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
+function loginErrorMessage(message: string) {
+  const normalized = message.toLowerCase();
+
+  if (normalized.includes("email not confirmed")) {
+    return "이메일 인증이 완료되지 않았습니다. 받은 메일에서 인증을 완료해주세요.";
+  }
+
+  if (normalized.includes("invalid login credentials")) {
+    return "등록된 이메일 또는 비밀번호가 일치하지 않습니다.";
+  }
+
+  if (normalized.includes("api key") || normalized.includes("invalid key")) {
+    return "Supabase 공개 키가 현재 프로젝트와 일치하지 않습니다. 관리자에게 문의해주세요.";
+  }
+
+  return `로그인 오류: ${message}`;
+}
+
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -10,34 +28,45 @@ export default function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const email = String(form.get("email") || "").trim();
+    const email = String(form.get("email") || "").trim().toLowerCase();
     const password = String(form.get("password") || "");
 
     setLoading(true);
     setMessage("");
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error || !data.session) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        setMessage(loginErrorMessage(error.message));
+        return;
+      }
+
+      if (!data.session) {
+        setMessage("로그인 세션을 만들지 못했습니다. 잠시 후 다시 시도해주세요.");
+        return;
+      }
+
+      const syncResponse = await fetch("/api/auth/sync-profile", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+
+      if (!syncResponse.ok) {
+        const result = await syncResponse.json().catch(() => null);
+        setMessage(result?.error || "회원정보를 불러오지 못했습니다. 다시 로그인해주세요.");
+        return;
+      }
+
+      window.location.href = "/mypage";
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "알 수 없는 오류";
+      setMessage(`네트워크 또는 설정 오류: ${detail}`);
+    } finally {
       setLoading(false);
-      setMessage("이메일 또는 비밀번호를 확인해주세요.");
-      return;
     }
-
-    const syncResponse = await fetch("/api/auth/sync-profile", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${data.session.access_token}`,
-      },
-    });
-
-    if (!syncResponse.ok) {
-      const result = await syncResponse.json().catch(() => null);
-      setLoading(false);
-      setMessage(result?.error || "회원정보를 불러오지 못했습니다. 다시 로그인해주세요.");
-      return;
-    }
-
-    window.location.href = "/mypage";
   }
 
   return (
