@@ -42,7 +42,7 @@ export default function LoginPage() {
         return;
       }
 
-      if (!data.session) {
+      if (!data.session || !data.user) {
         setMessage("로그인 세션을 만들지 못했습니다. 잠시 후 다시 시도해주세요.");
         return;
       }
@@ -60,7 +60,24 @@ export default function LoginPage() {
         return;
       }
 
-      window.location.href = "/mypage";
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        setMessage(`회원 유형 확인 오류: ${profileError.message}`);
+        return;
+      }
+
+      if (profile?.role === "admin") {
+        window.location.href = "/admin";
+      } else if (profile?.role === "caregiver") {
+        window.location.href = "/caregiver";
+      } else {
+        window.location.href = "/mypage";
+      }
     } catch (error) {
       const detail = error instanceof Error ? error.message : "알 수 없는 오류";
       setMessage(`네트워크 또는 설정 오류: ${detail}`);
