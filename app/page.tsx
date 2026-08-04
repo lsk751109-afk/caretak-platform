@@ -24,15 +24,20 @@ export default function Home() {
 
   useEffect(() => {
     async function loadCms() {
-      const [bannerResult, noticeResult, faqResult] = await Promise.all([
-        supabase.from("site_banners").select("id,title,subtitle,link_url,image_url").eq("is_active", true).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+      const [bannerResponse, noticeResult, faqResult] = await Promise.all([
+        fetch("/api/banners", { cache: "no-store" }),
         supabase.from("notices").select("id,title,content,created_at").eq("is_published", true).order("created_at", { ascending: false }).limit(3),
         supabase.from("faqs").select("id,question,answer").eq("is_published", true).order("sort_order", { ascending: true }).limit(6),
       ]);
-      if (bannerResult.data) setBanner(bannerResult.data);
+
+      if (bannerResponse.ok) {
+        const bannerJson = await bannerResponse.json();
+        setBanner(bannerJson.banner ?? null);
+      }
       if (noticeResult.data) setNotices(noticeResult.data);
       if (faqResult.data) setFaqs(faqResult.data);
     }
+
     loadCms();
   }, []);
 
