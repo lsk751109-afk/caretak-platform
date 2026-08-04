@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import "../forms.css";
+import "../dashboard.css";
 
 interface Profile {
   name: string | null;
