@@ -1,21 +1,10 @@
-.authForm textarea {
-  width: 100%;
-  padding: 14px;
-  color: var(--text);
-  background: #fff;
-  border: 1px solid #cfd9e6;
-  border-radius: 12px;
-  font: inherit;
-  resize: vertical;
-  outline: none;
-}
+.authForm textarea { width: 100%; padding: 14px; color: var(--text); background: #fff; border: 1px solid #cfd9e6; border-radius: 12px; font: inherit; resize: vertical; outline: none; }
 .authForm textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(23,105,224,.1); }
 .vipPage { background: linear-gradient(145deg, #fffaf0, #f4f8ff); }
 .vipRequestCard { border-color: #eadbb9; }
 .vipBenefits { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 0 0 28px; }
 .vipBenefits div { padding: 18px; background: #fff9eb; border: 1px solid #eadbb9; border-radius: 15px; }
 .vipBenefits b, .vipBenefits span { display: block; }
-.vipBenefits b { color: #2b251a; }
 .vipBenefits span { margin-top: 4px; color: #756c59; font-size: 13px; }
 .dashboardPage { min-height: 100vh; padding-bottom: 80px; background: #f6f9fd; }
 .dashboardHeader { display: flex; align-items: center; justify-content: space-between; padding: 18px 7vw; background: #fff; border-bottom: 1px solid var(--line); }
@@ -24,6 +13,7 @@
 .dashboardHero h1 { margin: 0; font-size: clamp(34px,5vw,52px); letter-spacing: -.05em; }
 .dashboardHero p { margin: 10px 0 0; color: var(--muted); }
 .dashboardGrid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 20px; padding: 30px 7vw 10px; }
+.paymentOverviewGrid { grid-template-columns: 1fr; }
 .dashboardCard, .dashboardSection { background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 14px 40px rgba(16,43,78,.06); }
 .dashboardCard { padding: 28px; }
 .dashboardCard h2, .dashboardSection h2 { margin: 0; font-size: 22px; }
@@ -43,6 +33,7 @@
 .historyList { display: grid; gap: 10px; }
 .historyItem { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px; background: #f8fbff; border: 1px solid #e6edf5; border-radius: 15px; }
 .historyItem p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.historyActions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .historyStatus { padding: 7px 11px; color: var(--blue-dark); background: #e7f1ff; border-radius: 999px; font-size: 12px; font-weight: 900; white-space: nowrap; }
 .match-accepted, .match-active { color: #146847; background: #e4f8ef; }
 .match-rejected { color: #9b2c2c; background: #fff0f0; }
@@ -56,6 +47,12 @@
 .assignmentDetails div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid #e8eef5; }
 .assignmentDetails dt { color: var(--muted); }
 .assignmentDetails dd { margin: 0; font-weight: 700; }
+.paymentActionRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #e8eef5; }
+.paymentStatusTag { display: inline-flex; padding: 7px 11px; border-radius: 999px; font-size: 12px; font-weight: 900; white-space: nowrap; color: #5b6675; background: #edf1f5; }
+.payment-paid { color: #146847; background: #e4f8ef; }
+.payment-ready { color: #1557a6; background: #eaf3ff; }
+.payment-failed, .payment-cancelled { color: #9b2c2c; background: #fff0f0; }
+.payment-refunded { color: #765400; background: #fff4cf; }
 .notificationList { display: grid; gap: 10px; }
 .notificationItem { display: grid; grid-template-columns: 10px 1fr; gap: 13px; width: 100%; padding: 17px; text-align: left; background: #f8fbff; border: 1px solid #e5edf6; border-radius: 15px; cursor: pointer; }
 .notificationItem.unread { background: #edf6ff; border-color: #bdd7f8; }
@@ -65,6 +62,13 @@
 .notificationCopy { display: grid; gap: 4px; }
 .notificationCopy > span { color: var(--muted); font-size: 14px; }
 .notificationCopy small { color: #8a96a5; }
+.paymentHistoryList { display: grid; gap: 12px; }
+.paymentHistoryCard { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 20px; background: #f8fbff; border: 1px solid #e4ecf5; border-radius: 16px; }
+.paymentHistoryCard p { margin: 5px 0; color: var(--muted); }
+.paymentHistoryCard small { color: #8a96a5; }
+.paymentHistoryMeta { display: grid; justify-items: end; gap: 7px; }
+.paymentHistoryMeta strong { font-size: 20px; color: var(--navy); }
+.paymentHistoryMeta > span:not(.paymentStatusTag) { color: var(--muted); font-size: 13px; }
 .emptyState { padding: 34px; color: var(--muted); text-align: center; background: #f8fafc; border-radius: 15px; }
 .loadingText { margin: 30vh auto 0; text-align: center; color: var(--muted); }
 .dashboardMessage { margin: 20px 7vw; }
@@ -100,17 +104,9 @@
 .paymentButton:disabled { opacity: .65; cursor: not-allowed; }
 .paymentState { margin: 12px 0 0; color: var(--muted); text-align: center; font-size: 13px; }
 .paymentMessage { margin: 20px 7vw; }
-@media (max-width: 1000px) {
-  .paymentLayout { grid-template-columns: 1fr; }
-  .paymentSummary { position: static; }
-}
-@media (max-width: 900px) {
-  .assignmentGrid { grid-template-columns: 1fr; }
-}
-@media (max-width: 800px) {
-  .dashboardGrid { grid-template-columns: 1fr; }
-  .vipBenefits { grid-template-columns: 1fr; }
-}
+@media (max-width: 1000px) { .paymentLayout { grid-template-columns: 1fr; } .paymentSummary { position: static; } }
+@media (max-width: 900px) { .assignmentGrid { grid-template-columns: 1fr; } }
+@media (max-width: 800px) { .dashboardGrid { grid-template-columns: 1fr; } .vipBenefits { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   .dashboardHeader { padding: 15px 20px; }
   .dashboardHeader .textButton { display: none; }
@@ -119,10 +115,14 @@
   .dashboardSection { margin: 16px 20px 0; padding: 20px; }
   .summaryNumbers { grid-template-columns: 1fr; }
   .historyItem { align-items: flex-start; flex-direction: column; }
+  .historyActions { justify-content: flex-start; }
   .profileCard dl div { grid-template-columns: 90px 1fr; }
   .assignedCardTop { grid-template-columns: 48px 1fr; }
   .assignedCardTop .historyStatus { grid-column: 2; justify-self: start; }
   .assignmentDetails div { grid-template-columns: 78px 1fr; }
+  .paymentActionRow { align-items: flex-start; flex-direction: column; }
+  .paymentHistoryCard { grid-template-columns: 1fr; }
+  .paymentHistoryMeta { justify-items: start; }
   .paymentHero { padding: 44px 20px 28px; }
   .paymentLayout { padding: 20px; }
   .paymentCard, .paymentSummary { padding: 22px 18px; }
