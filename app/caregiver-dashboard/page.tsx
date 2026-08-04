@@ -14,17 +14,19 @@ type Caregiver = {
   hourly_rate: number | null;
 };
 
+type CareRequestSummary = {
+  patient_name: string | null;
+  service_type: string | null;
+  address: string | null;
+  start_date: string | null;
+  end_date: string | null;
+};
+
 type Assignment = {
   id: string;
   status: string | null;
   matched_at: string | null;
-  care_requests: {
-    patient_name: string | null;
-    service_type: string | null;
-    address: string | null;
-    start_date: string | null;
-    end_date: string | null;
-  } | null;
+  care_requests: CareRequestSummary[];
 };
 
 export default function CaregiverDashboardPage() {
@@ -133,23 +135,26 @@ export default function CaregiverDashboardPage() {
               <div className="emptyState">현재 배정된 간병 일정이 없습니다.</div>
             ) : (
               <div className="historyList">
-                {assignments.map((item) => (
-                  <article className="historyItem assignmentItem" key={item.id}>
-                    <div>
-                      <b>{item.care_requests?.patient_name || "환자"} · {item.care_requests?.service_type || "간병 서비스"}</b>
-                      <p>{item.care_requests?.address || "지역 미입력"} · {item.care_requests?.start_date || "시작일 미정"}{item.care_requests?.end_date ? ` ~ ${item.care_requests.end_date}` : ""}</p>
-                    </div>
-                    <div className="assignmentActions">
-                      <span className="historyStatus">{item.status === "assigned" ? "응답 대기" : item.status === "accepted" ? "수락 완료" : item.status === "rejected" ? "거절" : item.status || "확인 중"}</span>
-                      {item.status === "assigned" && (
-                        <div className="inlineButtons">
-                          <button className="smallPrimary dashboardButton" onClick={() => changeStatus(item.id, "accepted")}>수락</button>
-                          <button className="secondaryButton compactButton" onClick={() => changeStatus(item.id, "rejected")}>거절</button>
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                ))}
+                {assignments.map((item) => {
+                  const request = item.care_requests?.[0];
+                  return (
+                    <article className="historyItem assignmentItem" key={item.id}>
+                      <div>
+                        <b>{request?.patient_name || "환자"} · {request?.service_type || "간병 서비스"}</b>
+                        <p>{request?.address || "지역 미입력"} · {request?.start_date || "시작일 미정"}{request?.end_date ? ` ~ ${request.end_date}` : ""}</p>
+                      </div>
+                      <div className="assignmentActions">
+                        <span className="historyStatus">{item.status === "assigned" ? "응답 대기" : item.status === "accepted" ? "수락 완료" : item.status === "rejected" ? "거절" : item.status || "확인 중"}</span>
+                        {item.status === "assigned" && (
+                          <div className="inlineButtons">
+                            <button className="smallPrimary dashboardButton" onClick={() => changeStatus(item.id, "accepted")}>수락</button>
+                            <button className="secondaryButton compactButton" onClick={() => changeStatus(item.id, "rejected")}>거절</button>
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             )}
           </section>
