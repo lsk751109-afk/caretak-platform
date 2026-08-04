@@ -15,15 +15,29 @@ export default function LoginPage() {
 
     setLoading(true);
     setMessage("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error) {
+    if (error || !data.session) {
+      setLoading(false);
       setMessage("이메일 또는 비밀번호를 확인해주세요.");
       return;
     }
 
-    window.location.href = "/";
+    const syncResponse = await fetch("/api/auth/sync-profile", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    });
+
+    if (!syncResponse.ok) {
+      const result = await syncResponse.json().catch(() => null);
+      setLoading(false);
+      setMessage(result?.error || "회원정보를 불러오지 못했습니다. 다시 로그인해주세요.");
+      return;
+    }
+
+    window.location.href = "/mypage";
   }
 
   return (
