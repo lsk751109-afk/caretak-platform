@@ -70,6 +70,40 @@
 .dashboardMessage { margin: 20px 7vw; }
 .userEmail { color: var(--muted); font-size: 14px; font-weight: 800; }
 .authButton { border: 0; background: transparent; cursor: pointer; font: inherit; }
+.paymentPage { min-height: 100vh; padding-bottom: 80px; background: #f5f8fc; }
+.paymentHero { padding: 56px 7vw 34px; background: linear-gradient(135deg,#edf5ff,#f7fffc); }
+.paymentHero h1 { margin: 0; font-size: clamp(34px,5vw,50px); letter-spacing: -.05em; }
+.paymentHero p { margin: 8px 0 0; color: var(--muted); }
+.paymentLayout { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 24px; padding: 28px 7vw 0; align-items: start; }
+.paymentMain { display: grid; gap: 18px; }
+.paymentCard, .paymentSummary { padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 14px 40px rgba(16,43,78,.06); }
+.paymentCard h2, .paymentSummary h2 { margin: 0 0 20px; font-size: 22px; }
+.contractList { margin: 0; }
+.contractList div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid #edf1f6; }
+.contractList dt { color: var(--muted); }
+.contractList dd { margin: 0; font-weight: 800; }
+.termsBox { padding: 18px; color: #526177; background: #f7f9fc; border-radius: 14px; }
+.termsBox p { margin: 0 0 10px; }
+.termsBox p:last-child { margin-bottom: 0; }
+.agreementCheck { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; font-weight: 800; }
+.agreementCheck input { margin-top: 5px; }
+.paymentSummary { position: sticky; top: 96px; }
+.priceRows { display: grid; gap: 12px; }
+.priceRows div { display: flex; justify-content: space-between; gap: 20px; color: var(--muted); }
+.priceRows b { color: var(--text); }
+.totalPrice { display: grid; gap: 5px; margin: 22px 0; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.totalPrice span { color: var(--muted); }
+.totalPrice strong { color: var(--blue); font-size: 28px; }
+.paymentMethod { display: grid; gap: 7px; color: #344258; font-size: 14px; font-weight: 800; }
+.paymentMethod select { min-height: 48px; padding: 0 12px; border: 1px solid #cfd9e6; border-radius: 12px; background: #fff; font: inherit; }
+.paymentButton { width: 100%; margin-top: 18px; border: 0; cursor: pointer; }
+.paymentButton:disabled { opacity: .65; cursor: not-allowed; }
+.paymentState { margin: 12px 0 0; color: var(--muted); text-align: center; font-size: 13px; }
+.paymentMessage { margin: 20px 7vw; }
+@media (max-width: 1000px) {
+  .paymentLayout { grid-template-columns: 1fr; }
+  .paymentSummary { position: static; }
+}
 @media (max-width: 900px) {
   .assignmentGrid { grid-template-columns: 1fr; }
 }
@@ -89,4 +123,8 @@
   .assignedCardTop { grid-template-columns: 48px 1fr; }
   .assignedCardTop .historyStatus { grid-column: 2; justify-self: start; }
   .assignmentDetails div { grid-template-columns: 78px 1fr; }
+  .paymentHero { padding: 44px 20px 28px; }
+  .paymentLayout { padding: 20px; }
+  .paymentCard, .paymentSummary { padding: 22px 18px; }
+  .contractList div { grid-template-columns: 90px 1fr; }
 }
