@@ -55,8 +55,8 @@ export default function AdminPage() {
   setMessage("관리자 권한이 없습니다.");
   setLoading(false);
   return;
-}{ setMessage("관리자 권한이 없습니다."); setLoading(false); return; }
-    setAuthorized(true);
+  }
+  setAuthorized(true);
 
     const [caregiverResult, requestResult, matchingResult, supportResult, profileResult, paymentResult] = await Promise.all([
       supabase.from("caregivers").select("id,name,phone,address,career_years,status,created_at").order("created_at", { ascending: false }),
