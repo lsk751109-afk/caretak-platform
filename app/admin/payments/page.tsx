@@ -3,6 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+interface CareRequestSummary {
+  patient_name: string | null;
+  service_type: string | null;
+  address: string | null;
+}
+
 interface Payment {
   id: string;
   request_id: string;
@@ -10,11 +16,7 @@ interface Payment {
   payment_method: string | null;
   payment_status: string | null;
   created_at: string;
-  care_requests: {
-    patient_name: string | null;
-    service_type: string | null;
-    address: string | null;
-  } | null;
+  care_requests: CareRequestSummary[] | null;
 }
 
 const statusLabel: Record<string, string> = {
@@ -59,8 +61,12 @@ export default function AdminPaymentsPage() {
       .select("id,request_id,amount,payment_method,payment_status,created_at,care_requests(patient_name,service_type,address)")
       .order("created_at", { ascending: false });
 
-    if (error) setMessage(error.message);
-    setPayments((data || []) as Payment[]);
+    if (error) {
+      setMessage(error.message);
+      setPayments([]);
+    } else {
+      setPayments((data || []) as Payment[]);
+    }
     setLoading(false);
   }
 
@@ -108,13 +114,16 @@ export default function AdminPaymentsPage() {
           </select>
         </div>
         <div className="adminTableWrap"><table className="adminTable"><thead><tr><th>환자·서비스</th><th>결제수단</th><th>금액</th><th>상태</th><th>등록일</th></tr></thead><tbody>
-          {visible.map((item) => <tr key={item.id}>
-            <td><b>{item.care_requests?.patient_name || "환자"}</b><small>{item.care_requests?.service_type || "간병 서비스"} · {item.care_requests?.address || "지역 미입력"}</small></td>
-            <td>{methodLabel[item.payment_method || ""] || item.payment_method || "-"}</td>
-            <td><b>{Number(item.amount || 0).toLocaleString()}원</b></td>
-            <td><span className={`adminBadge ${item.payment_status || "ready"}`}>{statusLabel[item.payment_status || "ready"] || item.payment_status}</span></td>
-            <td>{new Date(item.created_at).toLocaleDateString("ko-KR")}</td>
-          </tr>)}
+          {visible.map((item) => {
+            const careRequest = item.care_requests?.[0];
+            return <tr key={item.id}>
+              <td><b>{careRequest?.patient_name || "환자"}</b><small>{careRequest?.service_type || "간병 서비스"} · {careRequest?.address || "지역 미입력"}</small></td>
+              <td>{methodLabel[item.payment_method || ""] || item.payment_method || "-"}</td>
+              <td><b>{Number(item.amount || 0).toLocaleString()}원</b></td>
+              <td><span className={`adminBadge ${item.payment_status || "ready"}`}>{statusLabel[item.payment_status || "ready"] || item.payment_status}</span></td>
+              <td>{new Date(item.created_at).toLocaleDateString("ko-KR")}</td>
+            </tr>;
+          })}
           {visible.length === 0 && <tr><td colSpan={5}>표시할 결제 내역이 없습니다.</td></tr>}
         </tbody></table></div>
       </section>
