@@ -51,7 +51,7 @@ export default function Home() {
 
       <section className="cta" id="contact"><div><span className="eyebrow">CARETAK SUPPORT</span><h2>지금 필요한 간병을 상담해보세요.</h2><p>접수 내용을 확인한 뒤 케어택 상담 담당자가 안내합니다.</p></div><div className="ctaButtons"><a className="primaryButton" href="tel:0318682436">전화 상담 031-868-2436</a><a className="secondaryButton white" href="/care-request">온라인 신청</a></div></section>
 
-      <footer className="footer"><div className="brand footerBrand"><span className="brandMark">C</span><span>케어택</span></div><p>마켓하우스 · 대표 이승규 · 031-868-2436</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p><small>© 2026 CareTak. All rights reserved.</small></footer>
+      <footer className="footer"><div className="brand footerBrand"><span className="brandMark">C</span><span>케어택</span></div><p>마켓하우스 · 대표 이승규 · 031-868-2436</p><p>이메일 lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p><small>© 2026 CareTak. All rights reserved.</small></footer>
     </main>
   );
 }
