@@ -1,3 +1,6 @@
+import "../../forms.css";
+import "../result.css";
+
 export default async function PaymentFailPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
   const message = typeof params.message === "string" ? params.message : "결제가 완료되지 않았습니다.";
