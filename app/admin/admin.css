@@ -1,0 +1,41 @@
+.dashboardPage { min-height: 100vh; padding-bottom: 80px; background: #f5f8fc; }
+.dashboardHeader { display: flex; align-items: center; justify-content: space-between; padding: 18px 6vw; background: #fff; border-bottom: 1px solid var(--line); }
+.dashboardButton { border: 0; cursor: pointer; }
+.dashboardHero { padding: 58px 7vw 34px; }
+.dashboardHero h1 { margin: 0; font-size: clamp(36px, 5vw, 58px); letter-spacing: -.05em; }
+.dashboardHero p { color: var(--muted); }
+.adminStats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 0 7vw 30px; }
+.adminStats div { display: flex; flex-direction: column; padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 12px 28px rgba(16,43,78,.05); }
+.adminStats b { color: var(--navy); font-size: 34px; }
+.adminStats span { color: var(--muted); font-size: 14px; }
+.dashboardSection { margin: 24px 7vw; padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 14px 34px rgba(16,43,78,.05); }
+.dashboardTitle { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.dashboardTitle h2 { margin: 0; font-size: 24px; }
+.dashboardTitle span { color: var(--muted); font-weight: 800; }
+.adminTableWrap { overflow-x: auto; }
+.adminTable { width: 100%; min-width: 820px; border-collapse: collapse; }
+.adminTable th, .adminTable td { padding: 16px 12px; text-align: left; border-bottom: 1px solid #e7edf4; vertical-align: middle; }
+.adminTable th { color: #607087; background: #f8fafc; font-size: 13px; }
+.adminTable td { color: #263449; }
+.adminTable td b, .adminTable td small { display: block; }
+.adminTable td small { margin-top: 4px; color: var(--muted); }
+.adminTable select { min-height: 38px; padding: 0 10px; border: 1px solid #ced9e6; border-radius: 9px; background: #fff; }
+.adminBadge { display: inline-flex; padding: 6px 10px; color: #8a650a; background: #fff4cf; border-radius: 999px; font-size: 12px; font-weight: 900; }
+.adminBadge.approved, .adminBadge.matched, .adminBadge.completed { color: #17634e; background: #e8f8f2; }
+.adminBadge.rejected, .adminBadge.cancelled { color: #9b2c2c; background: #fff0f0; }
+.adminBadge.matching, .adminBadge.reviewing, .adminBadge.processing, .adminBadge.contacted { color: #1557a6; background: #eaf3ff; }
+.adminActions { display: flex; gap: 7px; }
+.adminActions button { padding: 8px 11px; color: #fff; background: var(--blue); border: 0; border-radius: 8px; font-weight: 800; cursor: pointer; }
+.adminActions button.danger { background: #a94242; }
+.loadingText { margin: 20vh auto 0; text-align: center; color: var(--muted); }
+.dashboardMessage { margin: 20px 7vw; }
+@media (max-width: 900px) { .adminStats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .dashboardHeader { padding: 14px 18px; }
+  .dashboardHeader .textButton { display: none; }
+  .dashboardHero { padding: 42px 20px 24px; }
+  .adminStats { grid-template-columns: 1fr 1fr; padding: 0 20px 20px; }
+  .adminStats div { padding: 18px; }
+  .adminStats b { font-size: 28px; }
+  .dashboardSection { margin: 16px 20px; padding: 20px 16px; }
+}
