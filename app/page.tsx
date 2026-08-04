@@ -2,19 +2,11 @@
 
 import { useEffect, useState } from "react";
 import AuthActions from "@/components/AuthActions";
+import HomeBanner from "@/components/HomeBanner";
 import { supabase } from "@/lib/supabase";
 
-type Banner = { id: string; title: string; subtitle: string | null; link_url: string | null; image_url: string | null };
 type Notice = { id: string; title: string; content: string; created_at: string };
 type Faq = { id: string; question: string; answer: string };
-
-const fallbackBanner: Banner = {
-  id: "fallback",
-  title: "케어택 간병 전문 매칭 플랫폼",
-  subtitle: "24시간 간병인 매칭 · VIP 전담 간병 · 안전한 서비스 관리",
-  link_url: "/care-request",
-  image_url: null,
-};
 
 const services = [
   { icon: "🩺", title: "전문 간병인", text: "경력과 정보를 확인한 간병인을 연결합니다." },
@@ -26,19 +18,16 @@ const services = [
 const steps = ["회원가입", "간병 신청", "간병인 매칭", "서비스 시작"];
 
 export default function Home() {
-  const [banner, setBanner] = useState<Banner>(fallbackBanner);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [faqs, setFaqs] = useState<Faq[]>([]);
 
   useEffect(() => {
     async function loadCms() {
-      const [bannerResult, noticeResult, faqResult] = await Promise.all([
-        supabase.from("site_banners").select("id,title,subtitle,link_url,image_url").eq("is_active", true).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+      const [noticeResult, faqResult] = await Promise.all([
         supabase.from("notices").select("id,title,content,created_at").eq("is_published", true).order("created_at", { ascending: false }).limit(3),
         supabase.from("faqs").select("id,question,answer").eq("is_published", true).order("sort_order", { ascending: true }).limit(6),
       ]);
 
-      if (bannerResult.data) setBanner(bannerResult.data);
       if (noticeResult.data) setNotices(noticeResult.data);
       if (faqResult.data) setFaqs(faqResult.data);
     }
@@ -54,10 +43,7 @@ export default function Home() {
         <AuthActions />
       </header>
 
-      <section className="cmsBanner" style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(7,62,59,.92),rgba(7,95,91,.70)),url(${banner.image_url})` } : undefined}>
-        <div><span>CARETAK NOTICE</span><h2>{banner.title}</h2><p>{banner.subtitle}</p></div>
-        <a href={banner.link_url || "/care-request"}>자세히 보기</a>
-      </section>
+      <HomeBanner />
 
       <section className="hero" id="top">
         <div className="heroCopy">
