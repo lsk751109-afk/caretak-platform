@@ -1,0 +1,65 @@
+.authPage {
+  min-height: 100vh;
+  padding: 34px 20px 70px;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(23,105,224,.12), transparent 28%),
+    radial-gradient(circle at 85% 15%, rgba(24,195,154,.11), transparent 26%),
+    #f7faff;
+}
+.authBrand { width: max-content; margin: 0 auto 28px; }
+.authCard {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 42px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  box-shadow: 0 28px 70px rgba(16,43,78,.12);
+}
+.authCard.compact { width: min(520px, 100%); }
+.authCard h1 { margin: 0; font-size: 38px; letter-spacing: -.04em; }
+.authIntro { margin: 10px 0 28px; color: var(--muted); }
+.rolePicker { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px; }
+.rolePicker button {
+  padding: 20px;
+  text-align: left;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  cursor: pointer;
+}
+.rolePicker button.active { border-color: var(--blue); background: #eef5ff; box-shadow: inset 0 0 0 1px var(--blue); }
+.rolePicker b, .rolePicker span { display: block; }
+.rolePicker b { margin-bottom: 5px; font-size: 18px; }
+.rolePicker span { color: var(--muted); font-size: 13px; }
+.authForm { display: grid; gap: 17px; }
+.authForm label { display: grid; gap: 7px; color: #344258; font-size: 14px; font-weight: 800; }
+.authForm input, .authForm select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 14px;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid #cfd9e6;
+  border-radius: 12px;
+  font: inherit;
+  outline: none;
+}
+.authForm input:focus, .authForm select:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(23,105,224,.1); }
+.formButton { width: 100%; border: 0; cursor: pointer; font-size: 16px; }
+.formButton:disabled { opacity: .65; cursor: wait; }
+.formMessage { padding: 13px 15px; margin: 18px 0 0; color: #175d49; background: #eafaf4; border-radius: 12px; font-size: 14px; }
+.formMessage.error { color: #9b2c2c; background: #fff0f0; }
+.authFoot { margin: 22px 0 0; text-align: center; color: var(--muted); }
+.authFoot a { color: var(--blue); font-weight: 800; }
+.requestCard { width: min(850px, 100%); }
+.requestForm { grid-template-columns: 1fr 1fr; }
+.requestForm .full { grid-column: 1 / -1; }
+@media (max-width: 640px) {
+  .authPage { padding: 22px 14px 50px; }
+  .authCard { padding: 28px 20px; border-radius: 20px; }
+  .authCard h1 { font-size: 31px; }
+  .rolePicker, .requestForm { grid-template-columns: 1fr; }
+  .requestForm .full { grid-column: auto; }
+}
