@@ -1,0 +1,83 @@
+:root {
+  --navy: #164442;
+  --blue: #0b7f7a;
+  --blue-dark: #075f5b;
+  --mint: #24a69e;
+  --sky: #eef9f8;
+  --gold: #ff8a45;
+}
+
+.brand {
+  display: inline-block !important;
+  width: 176px;
+  height: 72px;
+  flex: 0 0 176px;
+  background-image: url('/caretak-logo.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  font-size: 0 !important;
+  line-height: 0;
+}
+
+.brand > * {
+  display: none !important;
+}
+
+.authBrand {
+  width: 210px;
+  height: 112px;
+  margin: 0 auto 8px;
+  flex-basis: 210px;
+}
+
+.footerBrand {
+  width: 190px;
+  height: 86px;
+  filter: brightness(0) invert(1);
+}
+
+.smallPrimary,
+.primaryButton {
+  background: linear-gradient(135deg, #0b7f7a, #075f5b) !important;
+  box-shadow: 0 12px 28px rgba(11, 127, 122, .22);
+}
+
+.primaryButton:hover,
+.smallPrimary:hover {
+  box-shadow: 0 16px 34px rgba(11, 127, 122, .28);
+}
+
+.eyebrow,
+.hero h1 strong,
+.nav a:hover {
+  color: #0b7f7a !important;
+}
+
+.cta {
+  background: linear-gradient(135deg, #0b7f7a, #075f5b) !important;
+}
+
+.status {
+  color: #075f5b;
+  background: #dcf4f1;
+}
+
+.status.vip,
+.gold {
+  color: #c55f22 !important;
+}
+
+@media (max-width: 640px) {
+  .brand {
+    width: 132px;
+    height: 58px;
+    flex-basis: 132px;
+  }
+
+  .authBrand {
+    width: 178px;
+    height: 94px;
+    flex-basis: 178px;
+  }
+}
