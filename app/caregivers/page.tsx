@@ -3,66 +3,635 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import "../forms.css";
+import "../dashboard.css";
 
-type Caregiver = {
-  id: string;
-  name: string;
-  gender: string | null;
-  address: string | null;
-  career_years: number | null;
-  certificate: string | null;
-  introduction: string | null;
-  hourly_rate: number | null;
-  status: string | null;
-};
 
-export default function CaregiversPage() {
-  const [items, setItems] = useState<Caregiver[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [keyword, setKeyword] = useState("");
+interface Caregiver {
 
-  useEffect(() => {
-    supabase
-      .from("caregivers")
-      .select("id,name,gender,address,career_years,certificate,introduction,hourly_rate,status")
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
-        setItems((data as Caregiver[]) ?? []);
-        setLoading(false);
-      });
-  }, []);
+id:string;
 
-  const filtered = items.filter((item) => {
-    const text = `${item.name} ${item.address ?? ""} ${item.certificate ?? ""}`.toLowerCase();
-    return text.includes(keyword.toLowerCase());
-  });
+name:string|null;
 
-  return (
-    <main className="directoryPage">
-      <header className="simpleHeader">
-        <a className="brand" href="/"><span className="brandMark">C</span><span>케어택</span></a>
-        <div className="headerActions"><a className="secondaryButton" href="/caregiver-register">간병인 등록</a><a className="smallPrimary" href="/care-request">간병 신청</a></div>
-      </header>
+phone:string|null;
 
-      <section className="directoryHero">
-        <span className="eyebrow">CAREGIVER DIRECTORY</span>
-        <h1>내 상황에 맞는 간병인을 찾아보세요.</h1>
-        <p>지역, 경력, 자격 정보를 확인하고 상담을 신청할 수 있습니다.</p>
-        <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="이름, 지역 또는 자격 검색" aria-label="간병인 검색" />
-      </section>
+address:string|null;
 
-      <section className="directoryGrid">
-        {loading && <p>간병인 정보를 불러오는 중입니다.</p>}
-        {!loading && filtered.length === 0 && <div className="emptyCard"><b>등록된 간병인이 없습니다.</b><p>간병인 등록 후 승인되면 이곳에 표시됩니다.</p></div>}
-        {filtered.map((item) => (
-          <article className="caregiverCard" key={item.id}>
-            <div className="caregiverTop"><div className="caregiverAvatar">{item.name.slice(0, 1)}</div><div><h2>{item.name}</h2><p>{item.gender ?? "성별 미입력"} · {item.address ?? "지역 미입력"}</p></div></div>
-            <div className="tagRow"><span>경력 {item.career_years ?? 0}년</span>{item.certificate && <span>{item.certificate}</span>}<span className="approvalTag">{item.status === "approved" ? "승인" : "검토중"}</span></div>
-            <p className="caregiverIntro">{item.introduction || "소개 내용이 아직 등록되지 않았습니다."}</p>
-            <div className="caregiverBottom"><b>{item.hourly_rate ? `${item.hourly_rate.toLocaleString()}원/시간` : "상담 후 결정"}</b><a href="/care-request">매칭 상담</a></div>
-          </article>
-        ))}
-      </section>
-    </main>
-  );
+career_years:number|null;
+
+certificate:string|null;
+
+hourly_rate:number|null;
+
+specialty:string|null;
+
+available:boolean|null;
+
 }
+
+
+
+
+export default function CaregiversPage(){
+
+
+const [caregivers,setCaregivers]
+=
+useState<Caregiver[]>([]);
+
+
+const [keyword,setKeyword]
+=
+useState("");
+
+
+const [loading,setLoading]
+=
+useState(true);
+
+
+const [message,setMessage]
+=
+useState("");
+
+
+
+
+
+async function loadCaregivers(){
+
+
+const {data,error}
+=
+await supabase
+.from("caregivers")
+.select(
+`
+id,
+name,
+phone,
+address,
+career_years,
+certificate,
+hourly_rate,
+specialty,
+available
+`
+)
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+if(error){
+
+setMessage(error.message);
+
+setLoading(false);
+
+return;
+
+}
+
+
+
+if(data){
+
+setCaregivers(data);
+
+}
+
+
+
+setLoading(false);
+
+
+}
+
+
+
+
+
+useEffect(()=>{
+
+loadCaregivers();
+
+},[]);
+
+
+
+
+
+const filteredCaregivers =
+caregivers.filter((item)=>{
+
+
+const text =
+
+`${item.name || ""}
+${item.address || ""}
+${item.specialty || ""}
+`
+.toLowerCase();
+
+
+
+return text.includes(
+keyword.toLowerCase()
+);
+
+
+});
+
+
+
+
+
+
+
+
+if(loading){
+
+
+return (
+
+<main className="authPage">
+
+<p className="loadingText">
+간병인 정보를 불러오는 중입니다...
+</p>
+
+</main>
+
+);
+
+
+}
+
+
+
+
+
+return (
+
+
+<main className="dashboardPage">
+
+
+
+
+
+<header className="dashboardHeader">
+
+
+<a
+className="brand"
+href="/"
+>
+
+
+<span className="brandMark">
+C
+</span>
+
+
+<span>
+케어택
+</span>
+
+
+</a>
+
+
+
+
+<div className="headerActions">
+
+
+<a
+className="textButton"
+href="/mypage"
+>
+마이페이지
+</a>
+
+
+
+<a
+className="textButton"
+href="/care-request"
+>
+간병 신청
+</a>
+
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+
+
+<section className="dashboardHero">
+
+
+<span className="eyebrow">
+CAREGIVERS
+</span>
+
+
+
+<h1>
+
+검증된 간병인 찾기
+
+</h1>
+
+
+
+<p>
+
+케어택 등록 간병인의 경력과 전문 분야를 확인하세요.
+
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section className="dashboardSection">
+
+
+
+<div className="dashboardTitle">
+
+
+<h2>
+간병인 목록
+</h2>
+
+
+</div>
+
+
+
+
+
+<div className="formGroup">
+
+
+<input
+
+value={keyword}
+
+onChange={(e)=>
+setKeyword(e.target.value)
+}
+
+placeholder="지역, 이름, 전문분야 검색"
+
+/>
+
+
+</div>
+
+
+
+
+
+
+
+{
+
+filteredCaregivers.length===0
+
+
+?
+
+
+<div className="emptyState">
+
+조건에 맞는 간병인이 없습니다.
+
+</div>
+
+
+
+:
+
+
+<div className="assignmentGrid">
+
+
+
+{
+
+filteredCaregivers.map((caregiver)=>(
+
+
+
+<article
+
+key={caregiver.id}
+
+className="assignedCaregiverCard"
+
+>
+
+
+
+<div className="assignedCardTop">
+
+
+
+<div className="caregiverAvatar">
+
+
+{
+caregiver.name?.slice(0,1)
+||
+"간"
+}
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<h3>
+
+{
+caregiver.name
+||
+"간병인"
+}
+
+</h3>
+
+
+
+<p>
+
+{
+caregiver.specialty
+||
+"일반 간병"
+
+}
+
+</p>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<dl className="assignmentDetails">
+
+
+
+<div>
+
+<dt>
+활동 지역
+</dt>
+
+
+<dd>
+
+{
+caregiver.address
+||
+"-"
+}
+
+</dd>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<dt>
+경력
+</dt>
+
+
+<dd>
+
+{
+caregiver.career_years
+||
+0
+}
+
+년
+
+</dd>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<dt>
+자격증
+</dt>
+
+
+<dd>
+
+{
+caregiver.certificate
+||
+"등록 정보 없음"
+}
+
+</dd>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<dt>
+희망 시급
+</dt>
+
+
+<dd>
+
+{
+
+caregiver.hourly_rate
+
+?
+
+`${caregiver.hourly_rate.toLocaleString()}원`
+
+:
+
+"협의"
+
+}
+
+</dd>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+<dt>
+가능 여부
+</dt>
+
+
+<dd>
+
+{
+
+caregiver.available
+
+?
+
+"🟢 즉시 가능"
+
+:
+
+"상담 필요"
+
+}
+
+</dd>
+
+
+</div>
+
+
+
+
+</dl>
+
+
+
+
+
+
+
+<a
+
+className="smallPrimary"
+
+href={`/care-request?caregiver=${caregiver.id}`}
+
+>
+
+매칭 요청
+
+</a>
+
+
+
+
+
+</article>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+}
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+{
+
+message &&
+
+<p className="formMessage error">
+
+{message}
+
+</p>
+
+}
+
+
+
+
+
+</main>
+
+
+);
+
+
+}
+
+
+
