@@ -38,10 +38,29 @@ export default function SignupPage() {
         return;
       }
 
-      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({ email, password });
       if (loginError) {
         setMessage("회원가입은 완료되었습니다. 로그인 페이지에서 다시 로그인해주세요.");
         window.setTimeout(() => { window.location.href = "/login"; }, 1200);
+        return;
+      }
+
+      if (!loginData.session) {
+        setMessage("회원가입은 완료되었습니다. 로그인 페이지에서 다시 로그인해주세요.");
+        window.setTimeout(() => { window.location.href = "/login"; }, 1200);
+        return;
+      }
+
+      const syncResponse = await fetch("/api/auth/sync-profile", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${loginData.session.access_token}`,
+        },
+      });
+
+      if (!syncResponse.ok) {
+        const syncResult = await syncResponse.json().catch(() => null);
+        setMessage(syncResult?.error || "회원정보를 생성하지 못했습니다. 다시 로그인해주세요.");
         return;
       }
 
