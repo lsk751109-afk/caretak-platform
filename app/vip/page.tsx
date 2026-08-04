@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import "../forms.css";
+import "../dashboard.css";
 
 export default function VipCarePage() {
   const [loading, setLoading] = useState(false);
