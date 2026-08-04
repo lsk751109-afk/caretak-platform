@@ -5,14 +5,23 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { supabase } from "@/lib/supabase";
 import "../forms.css";
 
+type CareRequestSummary = {
+  patient_name: string | null;
+  service_type: string | null;
+};
+
 type PaymentItem = {
   id: string;
   request_id: string;
   amount: number | null;
   payment_status: string | null;
   payment_method: string | null;
-  care_requests?: { patient_name: string | null; service_type: string | null } | null;
+  care_requests: CareRequestSummary[] | null;
 };
+
+function getCareRequest(item: PaymentItem): CareRequestSummary | null {
+  return item.care_requests?.[0] ?? null;
+}
 
 export default function PaymentPage() {
   const [items, setItems] = useState<PaymentItem[]>([]);
@@ -38,13 +47,14 @@ export default function PaymentPage() {
       .order("created_at", { ascending: false });
 
     if (error) setMessage(error.message);
-    setItems((data || []) as PaymentItem[]);
+    setItems((data ?? []) as PaymentItem[]);
     setLoading(false);
   }
 
   useEffect(() => { loadPayments(); }, []);
 
   const readyItems = useMemo(() => items.filter((item) => item.payment_status === "ready"), [items]);
+  void readyItems;
 
   async function pay(item: PaymentItem) {
     if (!storeId || !channelKey) {
@@ -56,6 +66,7 @@ export default function PaymentPage() {
       return;
     }
 
+    const careRequest = getCareRequest(item);
     setPayingId(item.id);
     setMessage("");
     const paymentId = `caretak-${item.request_id}-${Date.now()}`;
@@ -63,7 +74,7 @@ export default function PaymentPage() {
       storeId,
       channelKey,
       paymentId,
-      orderName: `${item.care_requests?.patient_name || "환자"} ${item.care_requests?.service_type || "간병 서비스"}`,
+      orderName: `${careRequest?.patient_name || "환자"} ${careRequest?.service_type || "간병 서비스"}`,
       totalAmount: item.amount,
       currency: "CURRENCY_KRW",
       payMethod: "CARD",
@@ -112,22 +123,25 @@ export default function PaymentPage() {
 
         {loading ? <p>결제 내역을 불러오는 중입니다...</p> : (
           <div className="paymentList">
-            {items.map((item) => (
-              <article className="paymentCard" key={item.id}>
-                <div>
-                  <b>{item.care_requests?.patient_name || "환자"} · {item.care_requests?.service_type || "간병 서비스"}</b>
-                  <p>{(item.amount || 0).toLocaleString()}원</p>
-                </div>
-                <div className="paymentActions">
-                  <span className={`adminBadge ${item.payment_status || "ready"}`}>{item.payment_status === "paid" ? "결제 완료" : item.payment_status === "ready" ? "결제 대기" : item.payment_status}</span>
-                  {item.payment_status === "ready" && (
-                    <button className="primaryButton" disabled={payingId === item.id} onClick={() => pay(item)}>
-                      {payingId === item.id ? "결제 진행 중..." : "카드 결제"}
-                    </button>
-                  )}
-                </div>
-              </article>
-            ))}
+            {items.map((item) => {
+              const careRequest = getCareRequest(item);
+              return (
+                <article className="paymentCard" key={item.id}>
+                  <div>
+                    <b>{careRequest?.patient_name || "환자"} · {careRequest?.service_type || "간병 서비스"}</b>
+                    <p>{(item.amount || 0).toLocaleString()}원</p>
+                  </div>
+                  <div className="paymentActions">
+                    <span className={`adminBadge ${item.payment_status || "ready"}`}>{item.payment_status === "paid" ? "결제 완료" : item.payment_status === "ready" ? "결제 대기" : item.payment_status}</span>
+                    {item.payment_status === "ready" && (
+                      <button className="primaryButton" disabled={payingId === item.id} onClick={() => pay(item)}>
+                        {payingId === item.id ? "결제 진행 중..." : "카드 결제"}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
             {items.length === 0 && <p className="noticeBox">현재 결제할 내역이 없습니다. 간병인 배정 수락 후 결제 요청이 생성됩니다.</p>}
           </div>
         )}
