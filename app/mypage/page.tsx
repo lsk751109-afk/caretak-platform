@@ -8,7 +8,7 @@ import "../dashboard.css";
 interface Profile { name: string | null; email: string | null; phone: string | null; role: string | null; }
 interface CareRequest { id: string; patient_name: string | null; service_type: string | null; address: string | null; start_date: string | null; end_date: string | null; request_status: string | null; created_at: string; }
 interface SupportRequest { id: string; category: string | null; title: string | null; status: string | null; created_at: string; }
-interface MatchRow {
+interface MatchRow {request_status:string|null;
   id: string; status: string | null; matched_at: string | null;
   care_requests: { id: string; patient_name: string | null; service_type: string | null; address: string | null; start_date: string | null; end_date: string | null; } | null;
   caregivers: { name: string | null; phone: string | null; address: string | null; career_years: number | null; certificate: string | null; hourly_rate: number | null; } | null;
@@ -48,7 +48,7 @@ export default function MyPage() {
     if (guardianResult.data?.id) {
       const [requestResult, matchingResult, paymentResult] = await Promise.all([
         supabase.from("care_requests").select("id,patient_name,service_type,address,start_date,end_date,request_status,created_at").eq("guardian_id", guardianResult.data.id).order("created_at", { ascending: false }),
-        supabase.from("matching").select("id,status,matched_at,care_requests(id,patient_name,service_type,address,start_date,end_date),caregivers(name,phone,address,career_years,certificate,hourly_rate)").order("matched_at", { ascending: false }),
+        supabase.from("matching").select("id,status,matched_at,care_requests(id,patient_name,service_type,address,start_date,end_date,request_status),caregivers(name,phone,address,career_years,certificate,hourly_rate)").order("matched_at", { ascending: false }),
         supabase.from("payments").select("id,request_id,amount,payment_method,payment_status,created_at").order("created_at", { ascending: false }),
       ]);
       if (requestResult.data) setRequests(requestResult.data);
@@ -89,9 +89,23 @@ export default function MyPage() {
 
     <section className="dashboardSection"><div className="dashboardTitle"><h2>배정된 간병인</h2><a href="/care-request">새 신청</a></div>{matches.length === 0 ? <div className="emptyState">아직 배정된 간병인이 없습니다.</div> : <div className="assignmentGrid">{matches.map((match) => {
       const payment = match.care_requests?.id ? payments.find((p) => p.request_id === match.care_requests?.id) : undefined;
-      const canPay = match.status === "accepted" || match.status === "active";
+      const isPaid = payment?.payment_status === "paid";
       return <article className="assignedCaregiverCard" key={match.id}><div className="assignedCardTop"><div className="caregiverAvatar">{match.caregivers?.name?.slice(0, 1) || "간"}</div><div><h3>{match.caregivers?.name || "간병인 확인 중"}</h3><p>{match.care_requests?.patient_name || "환자"} · {match.care_requests?.service_type || "간병 서비스"}</p></div><span className={`historyStatus match-${match.status || "unknown"}`}>{matchingStatusLabel(match.status)}</span></div>
-      <dl className="assignmentDetails"><div><dt>근무 지역</dt><dd>{match.care_requests?.address || "-"}</dd></div><div><dt>근무 기간</dt><dd>{match.care_requests?.start_date || "미정"}{match.care_requests?.end_date ? ` ~ ${match.care_requests.end_date}` : ""}</dd></div><div><dt>경력</dt><dd>{match.caregivers?.career_years || 0}년</dd></div><div><dt>자격증</dt><dd>{match.caregivers?.certificate || "등록 정보 없음"}</dd></div><div><dt>희망 시급</dt><dd>{match.caregivers?.hourly_rate ? `${match.caregivers.hourly_rate.toLocaleString()}원` : "협의"}</dd></div><div><dt>연락처</dt><dd>{canPay ? match.caregivers?.phone || "확인 중" : "수락 후 공개"}</dd></div></dl>
+      <dl className="assignmentDetails"><div><dt>근무 지역</dt><dd>{match.care_requests?.address || "-"}</dd></div><div><dt>근무 기간</dt><dd>{match.care_requests?.start_date || "미정"}{match.care_requests?.end_date ? ` ~ ${match.care_requests.end_date}` : ""}</dd></div><div><dt>경력</dt><dd>{match.caregivers?.career_years || 0}년</dd></div><div><dt>자격증</dt><dd>{match.caregivers?.certificate || "등록 정보 없음"}</dd></div><div><dt>희망 시급</dt><dd>{match.caregivers?.hourly_rate ? `${match.caregivers.hourly_rate.toLocaleString()}원` : "협의"}</dd></div><div>
+  <dt>연락처</dt>{match.care_requests?.id && !isPaid &&
+<a 
+ className="smallPrimary"
+ href={`/payment/${match.care_requests.id}`}
+>
+ {
+ payment?.payment_status === "ready"
+ ? "결제 계속하기"
+ : "결제하기"
+ }
+</a>
+}
+  </dd>
+</div></dl>
       <div className="paymentActionRow"><span className={`paymentStatusTag payment-${payment?.payment_status || "none"}`}>{payment ? paymentStatusLabel[payment.payment_status || "ready"] || payment.payment_status : "미결제"}</span>{match.care_requests?.id && canPay && payment?.payment_status !== "paid" && <a className="smallPrimary" href={`/payment/${match.care_requests.id}`}>{payment?.payment_status === "ready" ? "결제 계속하기" : "결제하기"}</a>}{payment?.payment_status === "paid" && <a className="secondaryButton compactButton" href="/mypage/payments">결제 내역</a>}</div>
       </article>;
     })}</div>}</section>
