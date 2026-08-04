@@ -10,10 +10,11 @@ export default function SignupPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const name = String(form.get("name") || "").trim();
     const phone = String(form.get("phone") || "").trim();
-    const email = String(form.get("email") || "").trim();
+    const email = String(form.get("email") || "").trim().toLowerCase();
     const password = String(form.get("password") || "");
 
     if (!name || !phone || !email || password.length < 6) {
@@ -23,20 +24,34 @@ export default function SignupPage() {
 
     setLoading(true);
     setMessage("");
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name, phone, role } },
-    });
-    setLoading(false);
 
-    if (error) {
-      setMessage(error.message);
-      return;
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, email, password, role }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        setMessage(result.error || "회원가입을 완료하지 못했습니다.");
+        return;
+      }
+
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+      if (loginError) {
+        setMessage("회원가입은 완료되었습니다. 로그인 페이지에서 다시 로그인해주세요.");
+        window.setTimeout(() => { window.location.href = "/login"; }, 1200);
+        return;
+      }
+
+      formElement.reset();
+      window.location.href = role === "caregiver" ? "/caregiver-register" : "/mypage";
+    } catch {
+      setMessage("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
     }
-
-    setMessage("회원가입이 완료되었습니다. 로그인 페이지로 이동해주세요.");
-    event.currentTarget.reset();
   }
 
   return (
@@ -57,10 +72,10 @@ export default function SignupPage() {
         </div>
 
         <form className="authForm" onSubmit={handleSubmit}>
-          <label>이름<input name="name" placeholder="이름을 입력하세요" autoComplete="name" /></label>
-          <label>휴대폰번호<input name="phone" placeholder="010-0000-0000" autoComplete="tel" /></label>
-          <label>이메일<input name="email" type="email" placeholder="name@example.com" autoComplete="email" /></label>
-          <label>비밀번호<input name="password" type="password" placeholder="6자 이상 입력하세요" autoComplete="new-password" /></label>
+          <label>이름<input name="name" placeholder="이름을 입력하세요" autoComplete="name" required /></label>
+          <label>휴대폰번호<input name="phone" placeholder="010-0000-0000" autoComplete="tel" required /></label>
+          <label>이메일<input name="email" type="email" placeholder="name@example.com" autoComplete="email" required /></label>
+          <label>비밀번호<input name="password" type="password" placeholder="6자 이상 입력하세요" autoComplete="new-password" minLength={6} required /></label>
           <button className="primaryButton formButton" disabled={loading}>{loading ? "가입 처리 중..." : "회원가입"}</button>
         </form>
 
