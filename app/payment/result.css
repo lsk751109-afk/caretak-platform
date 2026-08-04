@@ -1,0 +1,21 @@
+.paymentResultCard { text-align: center; }
+.resultIcon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 34px;
+  font-weight: 900;
+}
+.successIcon { background: linear-gradient(145deg,#18c39a,#0f9f78); box-shadow: 0 14px 32px rgba(24,195,154,.25); }
+.failIcon { background: linear-gradient(145deg,#ef6a6a,#c83e3e); box-shadow: 0 14px 32px rgba(200,62,62,.22); }
+.resultOrder { display: grid; gap: 5px; margin: 24px 0; padding: 18px; background: #f4f8fd; border-radius: 14px; }
+.resultOrder span { color: var(--muted); font-size: 13px; }
+.resultOrder b { word-break: break-all; }
+.resultActions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+@media (max-width: 640px) {
+  .resultActions, .resultActions a { width: 100%; }
+}
