@@ -27,7 +27,7 @@
 .rolePicker span { color: var(--muted); font-size: 13px; }
 .authForm, .formGrid { display: grid; gap: 17px; }
 .authForm label, .formGrid label { display: grid; gap: 7px; color: #344258; font-size: 14px; font-weight: 800; }
-.authForm input, .authForm select, .formGrid input, .formGrid select, .formGrid textarea, .directoryHero input {
+.authForm input, .authForm select, .authForm textarea, .formGrid input, .formGrid select, .formGrid textarea, .directoryHero input {
   width: 100%;
   min-height: 50px;
   padding: 0 14px;
@@ -38,17 +38,71 @@
   font: inherit;
   outline: none;
 }
-.formGrid textarea { padding: 14px; resize: vertical; }
-.authForm input:focus, .authForm select:focus, .formGrid input:focus, .formGrid select:focus, .formGrid textarea:focus, .directoryHero input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(23,105,224,.1); }
+.authForm textarea, .formGrid textarea { min-height: 120px; padding: 14px; resize: vertical; }
+.authForm input:focus, .authForm select:focus, .authForm textarea:focus, .formGrid input:focus, .formGrid select:focus, .formGrid textarea:focus, .directoryHero input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(23,105,224,.1); }
 .formButton, .submitButton { width: 100%; border: 0; cursor: pointer; font-size: 16px; }
 .formButton:disabled, .submitButton:disabled { opacity: .65; cursor: wait; }
 .formMessage { padding: 13px 15px; margin: 18px 0 0; color: #175d49; background: #eafaf4; border-radius: 12px; font-size: 14px; }
 .formMessage.error { color: #9b2c2c; background: #fff0f0; }
 .authFoot { margin: 22px 0 0; text-align: center; color: var(--muted); }
 .authFoot a { color: var(--blue); font-weight: 800; }
-.requestCard { width: min(850px, 100%); }
+.requestCard { width: min(980px, 100%); }
 .requestForm, .formGrid { grid-template-columns: 1fr 1fr; }
 .requestForm .full, .fullField { grid-column: 1 / -1; }
+.formSectionTitle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 18px;
+  margin-top: 8px;
+  border-top: 1px solid #e4eceb;
+}
+.formSectionTitle:first-of-type { padding-top: 0; margin-top: 0; border-top: 0; }
+.formSectionTitle b { color: #123d3b; font-size: 20px; }
+.formSectionTitle span { color: var(--muted); font-size: 13px; text-align: right; }
+.conditionGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.conditionGrid button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 13px;
+  color: #3d4d5d;
+  background: #fff;
+  border: 1px solid #ccd8d7;
+  border-radius: 12px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+.conditionGrid button span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: #0b7f7a;
+  background: #e8f7f5;
+  border-radius: 50%;
+  font-weight: 900;
+}
+.conditionGrid button.selected { color: #075f5b; border-color: #0b7f7a; background: #ecf9f7; box-shadow: inset 0 0 0 1px #0b7f7a; }
+.conditionGrid button.selected span { color: #fff; background: #0b7f7a; }
+.priceEstimate {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 22px;
+  background: linear-gradient(135deg, #f0faf8, #fff8f2);
+  border: 1px solid #cfe6e2;
+  border-radius: 18px;
+}
+.priceEstimate div { display: flex; flex-direction: column; gap: 5px; }
+.priceEstimate span { color: #60706f; font-size: 13px; }
+.priceEstimate b { color: #183f3d; font-size: 18px; }
+.priceEstimate .priceTotal { padding-left: 18px; border-left: 1px solid #cfe0dd; }
+.priceEstimate strong { color: #ef7440; font-size: 25px; }
+.priceEstimate small { grid-column: 1 / -1; color: #788582; line-height: 1.55; }
 .formPage { min-height: 100vh; padding: 34px 20px 80px; background: #f6f9fd; }
 .formBrand { display: flex; align-items: center; gap: 10px; width: max-content; margin: 0 auto 28px; font-size: 22px; }
 .wideForm { width: min(900px, 100%); }
@@ -72,13 +126,19 @@
 .caregiverIntro { min-height: 76px; color: var(--muted); }
 .caregiverBottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); }
 .caregiverBottom a { padding: 9px 13px; color: #fff; background: var(--blue); border-radius: 10px; font-weight: 800; }
-@media (max-width: 980px) { .directoryGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 980px) { .directoryGrid { grid-template-columns: repeat(2, 1fr); } .conditionGrid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) {
   .authPage, .formPage { padding: 22px 14px 50px; }
   .authCard, .formCard { padding: 28px 20px; border-radius: 20px; }
   .authCard h1, .formCard h1 { font-size: 31px; }
   .rolePicker, .requestForm, .formGrid { grid-template-columns: 1fr; }
   .requestForm .full, .fullField { grid-column: auto; }
+  .formSectionTitle { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .formSectionTitle span { text-align: left; }
+  .conditionGrid { grid-template-columns: 1fr; }
+  .priceEstimate { grid-template-columns: 1fr; }
+  .priceEstimate .priceTotal { padding: 14px 0 0; border-top: 1px solid #cfe0dd; border-left: 0; }
+  .priceEstimate small { grid-column: auto; }
   .simpleHeader { padding: 16px 20px; }
   .simpleHeader .secondaryButton { display: none; }
   .directoryHero { padding: 55px 20px 28px; }
