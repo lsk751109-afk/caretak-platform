@@ -52,7 +52,14 @@ export default function MyPage() {
         supabase.from("payments").select("id,request_id,amount,payment_method,payment_status,created_at").order("created_at", { ascending: false }),
       ]);
       if (requestResult.data) setRequests(requestResult.data);
-      if (matchingResult.data) setMatches(matchingResult.data as MatchRow[]);
+      if (matchingResult.data) {
+        const normalizedMatches = matchingResult.data.map((row: any) => ({
+          ...row,
+          care_requests: Array.isArray(row.care_requests) ? row.care_requests[0] ?? null : row.care_requests ?? null,
+          caregivers: Array.isArray(row.caregivers) ? row.caregivers[0] ?? null : row.caregivers ?? null,
+        })) as MatchRow[];
+        setMatches(normalizedMatches);
+      }
       if (paymentResult.data) setPayments(paymentResult.data);
       const error = requestResult.error || matchingResult.error || paymentResult.error;
       if (error) setMessage(error.message);
