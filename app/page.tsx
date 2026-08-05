@@ -56,7 +56,7 @@ export default function Home() {
       <header className="header">
         <Brand />
         <nav className="nav" aria-label="주요 메뉴">
-          <a href="#services">간병 서비스</a><a href="#process">이용방법</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="#support">고객지원</a>
+          <a href="#services">간병 서비스</a><a href="#process">이용방법</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="/uniforms">유니폼</a><a href="#support">고객지원</a>
         </nav>
         <AuthActions />
       </header>
@@ -100,6 +100,11 @@ export default function Home() {
         <div className="trainingImage" role="img" aria-label="케어택 간병 전문 교육실" />
       </section>
 
+      <section className="uniformPromo">
+        <div className="uniformPromoImage"><img src="/caretak-uniform-front.webp" alt="케어택 간병인 공식 유니폼 하복, 동복, 조끼, 모자" /></div>
+        <div className="uniformPromoCopy"><span className="eyebrow">CARETAK UNIFORM</span><h2>현장에서 더 단정하고<br />신뢰감 있게</h2><p>간병 업무의 활동성과 전문적인 인상을 함께 고려한 케어택 간병인 유니폼입니다. 하복, 동복, 조끼, 모자를 구매 문의할 수 있습니다.</p><div className="uniformTags"><span>통기성 하복</span><span>보온 동복</span><span>활동형 조끼</span><span>공식 모자</span></div><a className="primaryButton" href="/uniforms">유니폼 상품 보기 <span>→</span></a></div>
+      </section>
+
       <section className="vipSection" id="vip">
         <div className="vipPhoto" role="img" aria-label="VIP 전담간병 상담 모습"><span>PREMIUM CARE<br /><b>VIP</b></span></div>
         <div className="vipCopy"><span className="eyebrow gold">VIP CARE SERVICE</span><h2>더 세심한 돌봄이<br />필요한 순간</h2><p>중증 환자, 장기 간병, 중요한 일정처럼 특별한 관리가 필요한 경우 전담 코디네이터가 상담부터 간병인 배정, 일정 관리까지 1:1로 지원합니다.</p><div className="vipPoints"><div><b>01</b><span><strong>1:1 전담 상담</strong><small>상황에 맞는 간병 계획 수립</small></span></div><div><b>02</b><span><strong>우선 매칭 관리</strong><small>필요 조건에 맞춘 집중 검토</small></span></div><div><b>03</b><span><strong>진행 상황 확인</strong><small>서비스 기간 동안 세심한 관리</small></span></div></div><a className="darkButton" href="/vip">VIP 상담 신청하기 <span>→</span></a></div>
@@ -115,7 +120,7 @@ export default function Home() {
 
       <section className="cta" id="contact"><div><span className="eyebrow">CARETAK CONSULTING</span><h2>돌봄이 필요한 순간,<br />혼자 고민하지 마세요.</h2><p>케어택 상담 담당자가 필요한 간병을 차분히 안내해 드립니다.</p></div><div className="ctaButtons"><a className="primaryButton" href="tel:0318682436">전화 상담 031-868-2436</a><a className="secondaryButton white" href="/care-request">온라인 간병 신청</a></div></section>
 
-      <footer className="footer"><div className="footerTop"><Brand footer /><div className="footerLinks"><a href="#services">간병 서비스</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="#support">고객지원</a></div></div><div className="footerInfo"><p><b>마켓하우스</b> · 대표 이승규 · 031-868-2436 · lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p></div><div className="footerBottom"><small>© 2026 CareTak. All rights reserved.</small><small>보호자와 간병인을 위한 전문 간병 매칭 플랫폼</small></div></footer>
+      <footer className="footer"><div className="footerTop"><Brand footer /><div className="footerLinks"><a href="#services">간병 서비스</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="/uniforms">간병인 유니폼</a><a href="#support">고객지원</a></div></div><div className="footerInfo"><p><b>마켓하우스</b> · 대표 이승규 · 031-868-2436 · lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p></div><div className="footerBottom"><small>© 2026 CareTak. All rights reserved.</small><small>보호자와 간병인을 위한 전문 간병 매칭 플랫폼</small></div></footer>
     </main>
   );
 }

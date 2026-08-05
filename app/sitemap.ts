@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const routes = ["", "/care-request", "/caregivers", "/caregiver-register", "/vip", "/login", "/signup"];
+const routes = ["", "/care-request", "/caregivers", "/caregiver-register", "/vip", "/uniforms", "/login", "/signup"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
