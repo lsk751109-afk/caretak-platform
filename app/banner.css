@@ -2,8 +2,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 300px;
-  padding: 56px 8vw 62px;
+  min-height: 520px;
+  padding: 76px 8vw 82px;
   overflow: hidden;
   color: #fff;
   background:
@@ -26,7 +26,13 @@
 .homeBannerContent {
   position: relative;
   z-index: 1;
-  max-width: 780px;
+  max-width: 670px;
+  padding: 28px 30px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 22px;
+  background: rgba(2,34,40,.24);
+  box-shadow: 0 22px 60px rgba(0,0,0,.15);
+  backdrop-filter: blur(3px);
 }
 
 .homeBannerContent > span {
@@ -91,8 +97,9 @@
 
 @media (max-width: 640px) {
   .homeBanner {
-    min-height: 330px;
-    padding: 50px 22px 65px;
+    min-height: 480px;
+    padding: 42px 18px 65px;
+    background-position: 58% center;
   }
 
   .homeBannerGlow {
@@ -101,7 +108,8 @@
     height: 230px;
   }
 
-  .homeBannerContent h2 { font-size: 38px; }
+  .homeBannerContent { padding: 24px 20px; }
+  .homeBannerContent h2 { font-size: 36px; }
   .homeBannerContent p { font-size: 16px; }
   .homeBannerContent a { width: 100%; justify-content: center; }
   .homeBannerControls { left: 22px; }

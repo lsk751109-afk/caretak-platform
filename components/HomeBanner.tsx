@@ -18,14 +18,14 @@ const fallbackBanners: Banner[] = [
     title: "24시간 믿을 수 있는 간병 매칭",
     subtitle: "보호자 상황과 환자 상태를 확인해 적합한 간병인을 빠르게 연결합니다.",
     link_url: "/care-request",
-    image_url: null,
+    image_url: "/caretak-hero-men.webp",
   },
   {
     id: "fallback-vip",
     title: "VIP 전담간병 서비스",
     subtitle: "전담 코디네이터가 상담부터 배정과 일정 관리까지 세심하게 지원합니다.",
     link_url: "/vip",
-    image_url: null,
+    image_url: "/caretak-hero-women.webp",
   },
   {
     id: "fallback-safe",
@@ -56,7 +56,7 @@ export default function HomeBanner() {
   }, []);
 
   const banners = useMemo(
-    () => (cmsBanners.length ? [...cmsBanners, ...fallbackBanners.slice(0, 2)] : fallbackBanners),
+    () => (cmsBanners.length ? [...fallbackBanners.slice(0, 2), ...cmsBanners] : fallbackBanners),
     [cmsBanners],
   );
 
@@ -78,7 +78,7 @@ export default function HomeBanner() {
     <section
       className="homeBanner"
       aria-label="케어택 주요 안내"
-      style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(4,66,62,.94),rgba(5,114,104,.68)),url(${banner.image_url})` } : undefined}
+      style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(3,37,45,.9) 0%,rgba(4,66,62,.62) 38%,rgba(4,66,62,.14) 72%),url(${banner.image_url})` } : undefined}
     >
       <div className="homeBannerGlow" aria-hidden="true" />
       <div className="homeBannerContent">
