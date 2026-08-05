@@ -17,20 +17,24 @@ function jwtProjectRef(value: string | undefined) {
 
 export async function GET() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const publicKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const serverSecret =
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   const urlProjectRef = url
     ? new URL(url).hostname.split(".")[0]
     : null;
-  const anonProjectRef = jwtProjectRef(anonKey);
-  const serviceProjectRef = jwtProjectRef(serviceRoleKey);
+  const publicProjectRef = jwtProjectRef(publicKey);
+  const serverProjectRef = jwtProjectRef(serverSecret);
 
   let adminAuthReachable = false;
   let adminAuthError: string | null = null;
 
-  if (url && serviceRoleKey) {
-    const admin = createClient(url, serviceRoleKey, {
+  if (url && serverSecret) {
+    const admin = createClient(url, serverSecret, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
     const { error } = await admin.auth.admin.listUsers({ page: 1, perPage: 1 });
@@ -39,13 +43,15 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    configured: Boolean(url && anonKey && serviceRoleKey),
+    publicConfigured: Boolean(url && publicKey),
+    serverConfigured: Boolean(url && serverSecret),
+    configured: Boolean(url && publicKey && serverSecret),
     urlHost: url ? new URL(url).hostname : null,
     urlProjectRef,
-    anonProjectRef,
-    serviceProjectRef,
-    publicKeyMatchesUrl: anonProjectRef ? anonProjectRef === urlProjectRef : null,
-    serviceKeyMatchesUrl: serviceProjectRef ? serviceProjectRef === urlProjectRef : null,
+    publicProjectRef,
+    serverProjectRef,
+    publicKeyMatchesUrl: publicProjectRef ? publicProjectRef === urlProjectRef : null,
+    serverKeyMatchesUrl: serverProjectRef ? serverProjectRef === urlProjectRef : null,
     adminAuthReachable,
     adminAuthError,
   });
