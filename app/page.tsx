@@ -9,13 +9,26 @@ type Notice = { id: string; title: string; content: string; created_at: string }
 type Faq = { id: string; question: string; answer: string };
 
 const services = [
-  { icon: "🩺", title: "전문 간병인", text: "경력과 정보를 확인한 간병인을 연결합니다." },
-  { icon: "⚡", title: "빠른 매칭", text: "지역과 일정에 맞는 간병인을 신속하게 찾습니다." },
-  { icon: "🛡️", title: "안심 관리", text: "신청부터 서비스 종료까지 진행 상황을 관리합니다." },
-  { icon: "⭐", title: "VIP 전담간병", text: "전담 코디네이터가 맞춤 간병을 설계합니다." },
+  { number: "01", icon: "✦", title: "전문 간병 매칭", text: "환자 상태와 일정, 지역을 꼼꼼히 확인해 조건에 맞는 간병인을 연결합니다.", link: "/care-request" },
+  { number: "02", icon: "⌁", title: "간병인 찾기", text: "경력과 활동 정보를 살펴보고 우리 가족에게 맞는 간병인을 확인할 수 있습니다.", link: "/caregivers" },
+  { number: "03", icon: "✓", title: "안심 진행 관리", text: "신청부터 매칭, 서비스 진행과 종료까지 모든 과정을 한곳에서 관리합니다.", link: "/mypage" },
+  { number: "04", icon: "◆", title: "VIP 전담간병", text: "전담 코디네이터가 상담부터 배정과 일정 관리까지 세심하게 동행합니다.", link: "/vip" },
 ];
 
-const steps = ["회원가입", "간병 신청", "간병인 매칭", "서비스 시작"];
+const steps = [
+  ["01", "간병 신청", "환자 상태와 필요한 일정, 지역을 알려주세요."],
+  ["02", "조건 확인", "담당자가 신청 내용을 확인하고 필요한 사항을 안내합니다."],
+  ["03", "맞춤 매칭", "조건에 적합한 간병인을 검토하고 연결합니다."],
+  ["04", "안심 돌봄", "확정된 일정에 맞춰 간병 서비스를 시작합니다."],
+];
+
+function Brand({ footer = false }: { footer?: boolean }) {
+  return (
+    <a className={`brand ${footer ? "footerBrand" : ""}`} href="/" aria-label="케어택 홈">
+      <img src="/caretak-logo.svg" alt="케어택" />
+    </a>
+  );
+}
 
 export default function Home() {
   const [notices, setNotices] = useState<Notice[]>([]);
@@ -27,62 +40,78 @@ export default function Home() {
         supabase.from("notices").select("id,title,content,created_at").eq("is_published", true).order("created_at", { ascending: false }).limit(3),
         supabase.from("faqs").select("id,question,answer").eq("is_published", true).order("sort_order", { ascending: true }).limit(6),
       ]);
-
       if (noticeResult.data) setNotices(noticeResult.data);
       if (faqResult.data) setFaqs(faqResult.data);
     }
-
     loadCms();
   }, []);
 
   return (
     <main>
+      <div className="topNotice"><span>24시간 간병 상담</span><a href="tel:0318682436">031-868-2436</a><i /> <span>보호자와 간병인을 위한 안전한 연결</span></div>
       <header className="header">
-        <a className="brand" href="#top" aria-label="케어택 홈"><span className="brandMark">C</span><span>케어택</span></a>
-        <nav className="nav" aria-label="주요 메뉴"><a href="#services">서비스</a><a href="#process">이용방법</a><a href="#notice">공지</a><a href="#faq">FAQ</a><a href="#vip">VIP 간병</a></nav>
+        <Brand />
+        <nav className="nav" aria-label="주요 메뉴">
+          <a href="#services">간병 서비스</a><a href="#process">이용방법</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="#support">고객지원</a>
+        </nav>
         <AuthActions />
       </header>
 
       <HomeBanner />
 
-      <section className="hero" id="top">
-        <div className="heroCopy">
-          <span className="eyebrow">CARETAK CARE MATCHING</span>
-          <h1>돌봄이 필요한 순간,<br /><strong>믿을 수 있는 간병</strong>을 연결합니다.</h1>
-          <p>보호자의 상황과 환자의 필요를 확인해 검증된 간병인을 빠르고 안전하게 매칭합니다.</p>
-          <div className="heroButtons"><a className="primaryButton" href="/care-request">간병 신청하기</a><a className="secondaryButton" href="/caregivers">간병인 찾아보기</a></div>
-          <div className="heroStats"><div><b>24시간</b><span>상담 접수</span></div><div><b>맞춤형</b><span>간병 매칭</span></div><div><b>전담형</b><span>VIP 관리</span></div></div>
+      <section className="quickBar" aria-label="빠른 서비스">
+        <div><small>FOR FAMILY</small><b>간병이 필요하신가요?</b><a href="/care-request">간병 신청하기 <span>→</span></a></div>
+        <div><small>FOR CAREGIVER</small><b>간병 활동을 찾으시나요?</b><a href="/caregiver-register">간병인 등록하기 <span>→</span></a></div>
+        <div className="quickPhone"><small>CARE CONSULTING</small><b>전문 상담이 필요하신가요?</b><a href="tel:0318682436">031-868-2436 <span>→</span></a></div>
+      </section>
+
+      <section className="trustStrip">
+        <p><span>CARETAK PROMISE</span> 가족을 돌보는 마음으로, 필요한 순간 가장 가까운 곳에서 함께합니다.</p>
+        <div><b>24시간</b><small>상담 접수</small></div><div><b>1:1</b><small>맞춤 상담</small></div><div><b>전 과정</b><small>진행 관리</small></div>
+      </section>
+
+      <section className="section servicesSection" id="services">
+        <div className="sectionIntro splitIntro">
+          <div><span className="eyebrow">CARE SERVICES</span><h2>간병의 모든 순간을<br />더 안심할 수 있도록</h2></div>
+          <p>처음이라 막막한 간병 준비부터 서비스가 끝나는 순간까지,<br />케어택이 명확하고 따뜻한 기준으로 함께합니다.</p>
         </div>
-        <div className="heroPanel" aria-label="실시간 매칭 안내">
-          <div className="panelTop"><span className="liveDot" /><span>실시간 매칭 접수</span></div>
-          <div className="matchCard"><div className="avatar">간</div><div><b>서울 · 입원 간병</b><p>내일 오전부터 · 7일</p></div><span className="status">접수중</span></div>
-          <div className="matchCard"><div className="avatar mint">VIP</div><div><b>인천 · 전담 간병</b><p>전담 코디네이터 배정</p></div><span className="status vip">VIP</span></div>
-          <div className="secureBox"><span>✓</span><div><b>안전한 정보 관리</b><p>회원별 권한과 보안정책을 적용합니다.</p></div></div>
+        <div className="serviceGrid">
+          {services.map((service) => <a className="serviceCard" href={service.link} key={service.title}><span className="cardNumber">{service.number}</span><div className="serviceIcon">{service.icon}</div><h3>{service.title}</h3><p>{service.text}</p><b className="cardArrow">자세히 보기 <i>→</i></b></a>)}
         </div>
       </section>
 
-      <section className="section" id="services">
-        <div className="sectionHeading"><span className="eyebrow">CARE SERVICES</span><h2>케어택이 간병의 시작부터 끝까지 함께합니다.</h2><p>복잡한 간병 준비를 더 쉽고 명확하게 진행하세요.</p></div>
-        <div className="serviceGrid">{services.map((service) => <article className="serviceCard" key={service.title}><div className="serviceIcon">{service.icon}</div><h3>{service.title}</h3><p>{service.text}</p></article>)}</div>
+      <section className="careStory">
+        <div className="storyImage" role="img" aria-label="가족과 케어택 간병인이 함께하는 모습" />
+        <div className="storyCopy"><span className="eyebrow">OUR CARE STANDARD</span><h2>좋은 간병은<br />사람을 이해하는 것에서<br />시작합니다.</h2><p>환자의 상태뿐 아니라 보호자의 걱정까지 세심하게 듣습니다. 케어택은 조건만 연결하는 것을 넘어, 서로 믿고 돌봄을 이어갈 수 있도록 전 과정을 살핍니다.</p><ul><li><b>01</b> 환자와 보호자의 상황을 먼저 듣습니다.</li><li><b>02</b> 필요한 조건을 명확하게 확인합니다.</li><li><b>03</b> 서비스 진행 과정을 꾸준히 관리합니다.</li></ul></div>
       </section>
 
       <section className="processSection" id="process">
-        <div className="sectionHeading light"><span className="eyebrow">HOW IT WORKS</span><h2>간단한 4단계로 시작하세요.</h2></div>
-        <div className="steps">{steps.map((step, index) => <div className="step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step}</h3><p>{index === 0 ? "보호자 또는 간병인으로 가입합니다." : index === 1 ? "환자와 일정 정보를 입력합니다." : index === 2 ? "조건에 맞는 간병인을 확인합니다." : "확정된 일정에 맞춰 서비스를 시작합니다."}</p></div>)}</div>
+        <div className="sectionIntro centered light"><span className="eyebrow">HOW IT WORKS</span><h2>복잡했던 간병 준비,<br />네 단계면 충분합니다.</h2><p>신청부터 돌봄 시작까지 케어택이 순서대로 안내합니다.</p></div>
+        <div className="steps">{steps.map(([number, title, text]) => <article className="step" key={number}><span>{number}</span><div className="stepIcon" /><h3>{title}</h3><p>{text}</p></article>)}</div>
+        <div className="processAction"><a className="primaryButton mintButton" href="/care-request">지금 간병 신청하기 <span>→</span></a><small>간단한 정보 입력으로 상담을 시작할 수 있습니다.</small></div>
       </section>
 
-      {notices.length > 0 && <section className="section cmsSection" id="notice"><div className="sectionHeading"><span className="eyebrow">NOTICE</span><h2>케어택 공지사항</h2></div><div className="noticeGrid">{notices.map((item) => <article key={item.id}><time>{new Date(item.created_at).toLocaleDateString("ko-KR")}</time><h3>{item.title}</h3><p>{item.content}</p></article>)}</div></section>}
-
-      {faqs.length > 0 && <section className="section faqSection" id="faq"><div className="sectionHeading"><span className="eyebrow">FAQ</span><h2>자주 묻는 질문</h2></div><div className="faqList">{faqs.map((item) => <details key={item.id}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section>}
+      <section className="trainingSection">
+        <div className="trainingCopy"><span className="eyebrow">PROFESSIONAL TRAINING</span><h2>현장에서 필요한<br />돌봄 역량을 준비합니다.</h2><p>환자 이동, 체위 변경, 식사 보조 등 실제 간병 현장에서 필요한 내용을 중심으로 책임감 있는 돌봄을 준비합니다.</p><a className="lineButton" href="/caregiver-register">간병인 등록 안내 <span>→</span></a></div>
+        <div className="trainingImage" role="img" aria-label="케어택 간병 전문 교육실" />
+      </section>
 
       <section className="vipSection" id="vip">
-        <div><span className="eyebrow gold">VIP CARE</span><h2>중요한 순간을 위한<br />VIP 전담간병</h2><p>전담 코디네이터가 보호자 상담부터 간병인 배정, 일정 관리까지 세심하게 지원합니다.</p><a className="darkButton" href="/vip">VIP 상담 신청</a></div>
-        <div className="vipList"><div><span>01</span><b>1:1 전담 상담</b><p>상황을 자세히 확인해 맞춤 계획을 세웁니다.</p></div><div><span>02</span><b>우선 매칭 관리</b><p>필요 조건에 적합한 간병인을 우선 검토합니다.</p></div><div><span>03</span><b>서비스 진행 확인</b><p>서비스 기간 동안 진행 상황을 확인합니다.</p></div></div>
+        <div className="vipPhoto" role="img" aria-label="VIP 전담간병 상담 모습"><span>PREMIUM CARE<br /><b>VIP</b></span></div>
+        <div className="vipCopy"><span className="eyebrow gold">VIP CARE SERVICE</span><h2>더 세심한 돌봄이<br />필요한 순간</h2><p>중증 환자, 장기 간병, 중요한 일정처럼 특별한 관리가 필요한 경우 전담 코디네이터가 상담부터 간병인 배정, 일정 관리까지 1:1로 지원합니다.</p><div className="vipPoints"><div><b>01</b><span><strong>1:1 전담 상담</strong><small>상황에 맞는 간병 계획 수립</small></span></div><div><b>02</b><span><strong>우선 매칭 관리</strong><small>필요 조건에 맞춘 집중 검토</small></span></div><div><b>03</b><span><strong>진행 상황 확인</strong><small>서비스 기간 동안 세심한 관리</small></span></div></div><a className="darkButton" href="/vip">VIP 상담 신청하기 <span>→</span></a></div>
       </section>
 
-      <section className="cta" id="contact"><div><span className="eyebrow">CARETAK SUPPORT</span><h2>지금 필요한 간병을 상담해보세요.</h2><p>접수 내용을 확인한 뒤 케어택 상담 담당자가 안내합니다.</p></div><div className="ctaButtons"><a className="primaryButton" href="tel:0318682436">전화 상담 031-868-2436</a><a className="secondaryButton white" href="/care-request">온라인 신청</a></div></section>
+      {(notices.length > 0 || faqs.length > 0) && <section className="section supportSection" id="support">
+        <div className="sectionIntro centered"><span className="eyebrow">CARETAK GUIDE</span><h2>도움이 필요하신가요?</h2></div>
+        <div className="supportGrid">
+          {notices.length > 0 && <div className="noticePanel"><div className="panelHeading"><h3>공지사항</h3><a href="#notice">전체보기 →</a></div>{notices.map((item) => <article key={item.id}><time>{new Date(item.created_at).toLocaleDateString("ko-KR")}</time><div><h4>{item.title}</h4><p>{item.content}</p></div></article>)}</div>}
+          {faqs.length > 0 && <div className="faqPanel"><div className="panelHeading"><h3>자주 묻는 질문</h3></div>{faqs.slice(0, 4).map((item) => <details key={item.id}><summary>{item.question}<span>＋</span></summary><p>{item.answer}</p></details>)}</div>}
+        </div>
+      </section>}
 
-      <footer className="footer"><div className="brand footerBrand"><span className="brandMark">C</span><span>케어택</span></div><p>마켓하우스 · 대표 이승규 · 031-868-2436</p><p>이메일 lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p><small>© 2026 CareTak. All rights reserved.</small></footer>
+      <section className="cta" id="contact"><div><span className="eyebrow">CARETAK CONSULTING</span><h2>돌봄이 필요한 순간,<br />혼자 고민하지 마세요.</h2><p>케어택 상담 담당자가 필요한 간병을 차분히 안내해 드립니다.</p></div><div className="ctaButtons"><a className="primaryButton" href="tel:0318682436">전화 상담 031-868-2436</a><a className="secondaryButton white" href="/care-request">온라인 간병 신청</a></div></section>
+
+      <footer className="footer"><div className="footerTop"><Brand footer /><div className="footerLinks"><a href="#services">간병 서비스</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="#support">고객지원</a></div></div><div className="footerInfo"><p><b>마켓하우스</b> · 대표 이승규 · 031-868-2436 · lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p></div><div className="footerBottom"><small>© 2026 CareTak. All rights reserved.</small><small>보호자와 간병인을 위한 전문 간병 매칭 플랫폼</small></div></footer>
     </main>
   );
 }
