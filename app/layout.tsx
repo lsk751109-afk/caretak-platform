@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     siteName: "케어택",
     title: "케어택 | 전문 간병 매칭 플랫폼",
     description: "보호자와 검증된 간병인을 빠르고 안전하게 연결하는 케어택",
-    images: [{ url: "/caretak-hero-women.webp", width: 1920, height: 1080, alt: "케어택 전문 간병 서비스" }],
+    images: [{ url: "/caretak-home-hero-v2.webp", width: 1672, height: 941, alt: "케어택 재가·방문 전문 간병 서비스" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "케어택 | 전문 간병 매칭 플랫폼",
     description: "보호자와 검증된 간병인을 빠르고 안전하게 연결하는 케어택",
-    images: ["/caretak-hero-women.webp"],
+    images: ["/caretak-home-hero-v2.webp"],
   },
 };
 

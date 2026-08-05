@@ -4,7 +4,7 @@
 .homeBannerContent{position:relative;z-index:2;max-width:700px;padding:0;background:transparent}
 .homeBannerContent>span{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;color:#b9f4e8;font-size:12px;font-weight:800;letter-spacing:.22em}
 .homeBannerContent>span::before{content:"";width:34px;height:1px;background:#52d8be}
-.homeBannerContent h2{max-width:680px;margin:0;font-size:clamp(46px,5.2vw,76px);line-height:1.12;letter-spacing:-.055em;text-wrap:balance;text-shadow:0 3px 28px rgba(0,0,0,.2)}
+.homeBannerContent h2{max-width:680px;margin:0;font-family:"Gowun Batang","Noto Sans KR",serif;font-size:clamp(46px,5.2vw,76px);font-weight:700;line-height:1.2;letter-spacing:-.035em;text-wrap:balance;text-shadow:0 3px 28px rgba(0,0,0,.2)}
 .homeBannerContent p{max-width:630px;margin:25px 0 34px;color:rgba(255,255,255,.8);font-size:18px;line-height:1.85}
 .homeBannerContent a{display:inline-flex;align-items:center;gap:34px;padding:16px 22px;color:#063f42;background:#fff;border-radius:5px;font-size:14px;font-weight:800;box-shadow:0 14px 35px rgba(0,0,0,.16);transition:.25s ease}
 .homeBannerContent a:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(0,0,0,.24)}

@@ -14,25 +14,25 @@ type Banner = {
 
 const fallbackBanners: Banner[] = [
   {
-    id: "fallback-care",
-    title: "24시간 믿을 수 있는 간병 매칭",
-    subtitle: "보호자 상황과 환자 상태를 확인해 적합한 간병인을 빠르게 연결합니다.",
+    id: "fallback-home-care",
+    title: "집에서도 안심할 수 있는 따뜻한 돌봄",
+    subtitle: "어르신의 일상과 보호자의 마음을 헤아리는 재가·방문 간병을 연결합니다.",
     link_url: "/care-request",
-    image_url: "/caretak-hero-men.webp",
+    image_url: "/caretak-home-hero-v2.webp",
   },
   {
-    id: "fallback-vip",
-    title: "VIP 전담간병 서비스",
-    subtitle: "전담 코디네이터가 상담부터 배정과 일정 관리까지 세심하게 지원합니다.",
-    link_url: "/vip",
-    image_url: "/caretak-hero-women.webp",
+    id: "fallback-hospital-care",
+    title: "병원에서도 이어지는 전문적인 간병",
+    subtitle: "입원 생활에 필요한 돌봄을 세심하게 확인하고 믿을 수 있는 간병인을 연결합니다.",
+    link_url: "/care-request",
+    image_url: "/caretak-hospital-care-v2.webp",
   },
   {
-    id: "fallback-safe",
-    title: "전문 교육으로 준비된 간병인",
-    subtitle: "환자 이동, 체위 변경, 식사 보조 등 현장 중심 교육을 통해 책임감 있는 돌봄을 준비합니다.",
-    link_url: "/caregiver-register",
-    image_url: "/caretak-hero-training.webp",
+    id: "fallback-family-connect",
+    title: "보호자와 함께 확인하는 안심 간병",
+    subtitle: "간병 진행과 필요한 소식을 보호자가 편리하게 확인할 수 있도록 돕습니다.",
+    link_url: "/mypage",
+    image_url: "/caretak-guardian-app-v2.webp",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function HomeBanner() {
     <section
       className="homeBanner"
       aria-label="케어택 주요 안내"
-      style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(3,37,45,.9) 0%,rgba(4,66,62,.62) 38%,rgba(4,66,62,.14) 72%),url(${banner.image_url})` } : undefined}
+      style={banner.image_url ? { backgroundImage: `linear-gradient(90deg,rgba(3,31,44,.93) 0%,rgba(5,57,63,.62) 40%,rgba(5,57,63,.08) 74%),url(${banner.image_url})` } : undefined}
     >
       <div className="homeBannerGlow" aria-hidden="true" />
       <div className="homeBannerContent">
