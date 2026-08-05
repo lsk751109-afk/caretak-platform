@@ -26,6 +26,10 @@ function Brand({ footer = false }: { footer?: boolean }) {
   return (
     <a className={`brand ${footer ? "footerBrand" : ""}`} href="/" aria-label="케어택 홈">
       <img src="/caretak-logo.svg" alt="케어택" />
+      <span className="brandWord" aria-hidden="true">
+        <span><b>CARE</b><em>TAEK</em><i>.</i></span>
+        <small>PROFESSIONAL CARE MATCHING</small>
+      </span>
     </a>
   );
 }
