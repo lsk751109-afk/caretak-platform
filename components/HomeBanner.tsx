@@ -29,10 +29,10 @@ const fallbackBanners: Banner[] = [
   },
   {
     id: "fallback-safe",
-    title: "신청부터 결제까지 한곳에서",
-    subtitle: "간병 신청, 배정 현황, 결제와 알림을 케어택에서 편리하게 관리하세요.",
-    link_url: "/login",
-    image_url: null,
+    title: "전문 교육으로 준비된 간병인",
+    subtitle: "환자 이동, 체위 변경, 식사 보조 등 현장 중심 교육을 통해 책임감 있는 돌봄을 준비합니다.",
+    link_url: "/caregiver-register",
+    image_url: "/caretak-hero-training.webp",
   },
 ];
 
@@ -56,7 +56,7 @@ export default function HomeBanner() {
   }, []);
 
   const banners = useMemo(
-    () => (cmsBanners.length ? [...fallbackBanners.slice(0, 2), ...cmsBanners] : fallbackBanners),
+    () => (cmsBanners.length ? [...fallbackBanners, ...cmsBanners] : fallbackBanners),
     [cmsBanners],
   );
 
