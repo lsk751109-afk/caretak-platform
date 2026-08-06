@@ -7,17 +7,18 @@ export const metadata: Metadata = {
 };
 
 const products = [
-  { name: "케어택 하복 상의", english: "SUMMER TOP", tone: "화이트 · 청록", description: "통기성이 좋은 반팔형으로 따뜻한 계절과 실내 간병 활동에 적합합니다.", sizes: "사이즈 문의", price: "59,000원" },
+  { name: "케어택 하복 상의", english: "SUMMER TOP", tone: "화이트 · 청록", description: "통기성이 좋은 반팔형으로 따뜻한 계절과 실내 간병 활동에 적합합니다.", sizes: "사이즈 문의", price: "48,000원" },
   { name: "케어택 동복 상의", english: "WINTER TOP", tone: "딥 네이비", description: "단정한 카라와 긴소매 구성으로 환절기와 겨울철 활동에 적합합니다.", sizes: "사이즈 문의", price: "59,000원" },
   { name: "케어택 조끼", english: "CARE VEST", tone: "딥 네이비", description: "수납 포켓을 갖춘 활동형 조끼로 계절에 관계없이 편리하게 착용할 수 있습니다.", sizes: "사이즈 문의", price: "52,000원" },
   { name: "케어택 모자", english: "CARE CAP", tone: "딥 네이비", description: "야외 이동과 방문 간병 시 단정한 인상을 완성하는 공식 모자입니다.", sizes: "프리 사이즈", price: "29,000원" },
 ];
 
 const salePrices = [
-  ["하복·동복 상의", "59,000원", "단품"],
+  ["하복 상의", "48,000원", "단품"],
+  ["동복 상의", "59,000원", "단품"],
   ["조끼", "52,000원", "단품"],
   ["모자", "29,000원", "단품"],
-  ["상의+모자 세트", "82,000원", "개별 구매 대비 6,000원 할인"],
+  ["동복 상의+모자 세트", "82,000원", "개별 구매 대비 6,000원 할인"],
 ];
 
 export default function UniformsPage() {
