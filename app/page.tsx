@@ -51,7 +51,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main id="top">
       <div className="topNotice"><span>24시간 간병 상담</span><a href="tel:0318682436">031-868-2436</a><i /> <span>보호자와 간병인을 위한 안전한 연결</span></div>
       <header className="header">
         <Brand />
@@ -120,7 +120,17 @@ export default function Home() {
 
       <section className="cta" id="contact"><div><span className="eyebrow">CARETAK CONSULTING</span><h2>돌봄이 필요한 순간,<br />혼자 고민하지 마세요.</h2><p>케어택 상담 담당자가 필요한 간병을 차분히 안내해 드립니다.</p></div><div className="ctaButtons"><a className="primaryButton" href="tel:0318682436">전화 상담 031-868-2436</a><a className="secondaryButton white" href="/care-request">온라인 간병 신청</a></div></section>
 
-      <footer className="footer"><div className="footerTop"><Brand footer /><div className="footerLinks"><a href="#services">간병 서비스</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="/uniforms">간병인 유니폼</a><a href="#support">고객지원</a></div></div><div className="footerInfo"><p><b>마켓하우스</b> · 대표 이승규 · 031-868-2436 · lsk75@naver.com</p><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p></div><div className="footerBottom"><small>© 2026 CareTak. All rights reserved.</small><small>보호자와 간병인을 위한 전문 간병 매칭 플랫폼</small></div></footer>
+      <footer className="footer">
+        <div className="footerGlow" aria-hidden="true" />
+        <div className="footerMain">
+          <div className="footerIdentity"><Brand footer /><p>가족을 돌보는 마음으로 보호자와 전문 간병인을 연결합니다.</p><a className="footerPhone" href="tel:0318682436"><small>24시간 간병 상담</small><strong>031-868-2436</strong><span>전화 연결 →</span></a></div>
+          <div className="footerNavGroup"><b>CARE SERVICE</b><a href="/care-request">간병 신청하기</a><a href="/caregivers">간병인 찾기</a><a href="/vip">VIP 전담간병</a></div>
+          <div className="footerNavGroup"><b>CAREGIVER</b><a href="/caregiver-register">간병인 등록</a><a href="/caregiver">간병인 업무관리</a><a href="/uniforms">공식 유니폼 구입</a></div>
+          <div className="footerNavGroup"><b>SUPPORT</b><a href="#support">공지사항·자주 묻는 질문</a><a href="/login">로그인</a><a href="/signup">회원가입</a></div>
+        </div>
+        <div className="footerBusiness"><div><span>상호</span><b>마켓하우스</b></div><div><span>대표</span><b>이승규</b></div><div><span>전화</span><b>031-868-2436</b></div><div><span>이메일</span><b>lsk75@naver.com</b></div><p>인천광역시 옹진군 선재로265번길 51 나동 117호</p></div>
+        <div className="footerBottom"><small>© 2026 CARETAK. ALL RIGHTS RESERVED.</small><small>보호자와 간병인을 위한 전문 간병 매칭 플랫폼</small><a href="#top">맨 위로 ↑</a></div>
+      </footer>
     </main>
   );
 }
