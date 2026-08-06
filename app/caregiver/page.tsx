@@ -193,7 +193,7 @@ export default function CaregiverDashboard() {
         <div><dt>경력</dt><dd>{caregiver?.career_years || 0}년</dd></div>
         <div><dt>희망 시급</dt><dd>{caregiver?.hourly_rate ? `${caregiver.hourly_rate.toLocaleString()}원` : "협의"}</dd></div>
       </dl></article>
-      <article className="dashboardCard summaryCard"><h2>오늘의 안내</h2><p className="authIntro">배정 요청은 일정과 근무지를 확인한 뒤 수락해주세요. 수락 후 보호자에게 연락처가 공개됩니다.</p></article>
+      <article className="dashboardCard summaryCard"><h2>보험 제출 서류</h2><p className="authIntro">완료된 간병 건의 사실확인서와 비용 확인서를 작성해 PDF로 저장할 수 있습니다.</p><a className="smallPrimary" href="/caregiver/documents">보험서류 작성</a></article>
     </section>
 
     <section className="dashboardSection">
