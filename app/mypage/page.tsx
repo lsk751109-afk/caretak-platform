@@ -80,7 +80,7 @@ export default function MyPage() {
   const paidCount = payments.filter((i) => i.payment_status === "paid").length;
 
   return <main className="dashboardPage">
-    <header className="dashboardHeader"><a className="brand" href="/"><span className="brandMark">C</span><span>케어택</span></a><div className="headerActions"><a className="textButton" href="/mypage/payments">결제 내역</a><a className="textButton" href="/care-request">간병 신청</a><button className="smallPrimary dashboardButton" onClick={logout}>로그아웃</button></div></header>
+    <header className="dashboardHeader"><a className="brand" href="/"><span className="brandMark">C</span><span>케어택</span></a><div className="headerActions"><a className="textButton" href="/mypage/insurance-documents">보험 청구서류</a><a className="textButton" href="/mypage/payments">결제 내역</a><a className="textButton" href="/care-request">간병 신청</a><button className="smallPrimary dashboardButton" onClick={logout}>로그아웃</button></div></header>
     <section className="dashboardHero"><span className="eyebrow">MY CARETAK</span><h1>{profile?.name || "회원"}님, 안녕하세요.</h1><p>신청, 간병인 배정, 결제와 알림을 한곳에서 확인하세요.</p></section>
     <section className="dashboardGrid">
       <article className="dashboardCard profileCard"><h2>회원 정보</h2><dl><div><dt>이름</dt><dd>{profile?.name || "-"}</dd></div><div><dt>이메일</dt><dd>{profile?.email || "-"}</dd></div><div><dt>전화번호</dt><dd>{profile?.phone || "-"}</dd></div><div><dt>회원 유형</dt><dd>{profile?.role === "caregiver" ? "간병인" : "보호자"}</dd></div></dl></article>
