@@ -56,7 +56,7 @@ export default function Home() {
       <header className="header">
         <Brand />
         <nav className="nav" aria-label="주요 메뉴">
-          <a href="#services">간병 서비스</a><a href="#process">이용방법</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a href="/uniforms">유니폼</a><a href="#support">고객지원</a>
+          <a href="#services">간병 서비스</a><a href="#process">이용방법</a><a href="/caregivers">간병인 찾기</a><a href="#vip">VIP 전담간병</a><a className="uniformNavLink" href="/uniforms" aria-label="간병인 유니폼 구입"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 8.5h11l1 11h-13l1-11Z"/><path d="M9 9V6.8a3 3 0 0 1 6 0V9"/></svg><span>유니폼 구입</span></a><a href="#support">고객지원</a>
         </nav>
         <AuthActions />
       </header>
